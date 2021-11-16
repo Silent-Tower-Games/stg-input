@@ -13,16 +13,18 @@ application-static:
 
 lib:
 	make objs-lib
-	${CC} ${CFLAGS} ./src/STGInput.o -shared -o libstginput.so `sdl2-config --libs`
+	${CC} ${CFLAGS} ./src/ButtonState.o ./src/KeyboardState.o ./src/STGInput.o -shared -o libstginput.so `sdl2-config --libs`
 
 lib-static:
 	make objs-lib
-	ar rcs libstginput.a src/STGInput.o
+	ar rcs libstginput.a src/ButtonState.o src/KeyboardState.o src/STGInput.o
 
 objs:
 	${CC} ${CFLAGS} -c ./src/test.c -o ./src/test.o
 
 objs-lib:
+	${CC} ${CFLAGS} -c ./src/ButtonState.c -o ./src/ButtonState.o -fPIC
+	${CC} ${CFLAGS} -c ./src/KeyboardState.c -o ./src/KeyboardState.o -fPIC
 	${CC} ${CFLAGS} -c ./src/STGInput.c -o ./src/STGInput.o -fPIC
 
 clear:

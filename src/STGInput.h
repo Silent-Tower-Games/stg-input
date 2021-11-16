@@ -1,6 +1,7 @@
 #pragma once
 
 #include "STGInput.h"
+#include "ButtonState.h"
 #include "GamepadState.h"
 #include "KeyboardState.h"
 #include "MouseState.h"
@@ -11,3 +12,9 @@ typedef struct STGInput
 } STGInput;
 
 STGInput* STGInput_Create();
+
+void STGInput_Event(STGInput* input, SDL_Event event);
+
+void STGInput_Update(STGInput* input);
+
+void STGInput_Destroy(STGInput* input);

@@ -16,6 +16,20 @@ int STGInput_ButtonState_Name_IsDown(STGInput_ButtonState_Name buttonState)
     return 0;
 }
 
+int STGInput_ButtonState_Name_IsPressed(STGInput_ButtonState_Name buttonState)
+{
+    if(
+        buttonState == STGINPUT_BUTTONSTATE_NAME_PRESSED
+        ||
+        buttonState == STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED
+    )
+    {
+        return 1;
+    }
+    
+    return 0;
+}
+
 char* STGInput_ButtonState_Name_ToString(STGInput_ButtonState_Name buttonState)
 {
     switch(buttonState)
