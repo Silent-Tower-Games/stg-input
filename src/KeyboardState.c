@@ -22,22 +22,36 @@ void STGInput_KeyboardState_Event(STGInput_KeyboardState* keyboard, SDL_Event ev
     {
         case SDL_KEYDOWN:
         {
-            keyboard->button[index].state = (
-                event.key.repeat ?
-                    STGINPUT_BUTTONSTATE_NAME_DOWN_REPEAT
-                :
-                    STGINPUT_BUTTONSTATE_NAME_PRESSED
-            );
+            if(event.key.repeat)
+            {
+                keyboard->button[index].state = STGINPUT_BUTTONSTATE_NAME_DOWN_REPEAT;
+            }
+            else if(keyboard->button[index].lastPressed > 0) // pressed & less than 30 frames since last press
+            {
+                keyboard->button[index].state = STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK;
+                
+                keyboard->button[index].lastPressed = 0;
+            }
+            else
+            {
+                keyboard->button[index].state = STGINPUT_BUTTONSTATE_NAME_PRESSED;
+            }
         } break;
         
         case SDL_KEYUP:
         {
-            keyboard->button[index].state = (
-                keyboard->button[index].state == STGINPUT_BUTTONSTATE_NAME_PRESSED ?
-                    STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED
-                :
-                    STGINPUT_BUTTONSTATE_NAME_RELEASED
-            );
+            if(keyboard->button[index].state == STGINPUT_BUTTONSTATE_NAME_PRESSED)
+            {
+                keyboard->button[index].state = STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED;
+            }
+            else if(keyboard->button[index].state == STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK)
+            {
+                keyboard->button[index].state = STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK_THEN_RELEASED;
+            }
+            else
+            {
+                keyboard->button[index].state = STGINPUT_BUTTONSTATE_NAME_RELEASED;
+            }
         } break;
     }
 }
@@ -46,6 +60,19 @@ void STGInput_KeyboardState_Update(STGInput_KeyboardState* keyboard)
 {
     for(int i = 0; i < STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH; i++)
     {
+        if(
+            keyboard->button[i].state == STGINPUT_BUTTONSTATE_NAME_PRESSED
+            ||
+            keyboard->button[i].state == STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED
+        )
+        {
+            keyboard->button[i].lastPressed = 30;
+        }
+        else
+        {
+            keyboard->button[i].lastPressed--;
+        }
+        
         switch(keyboard->button[i].state)
         {
             case STGINPUT_BUTTONSTATE_NAME_DOWN_REPEAT:
@@ -66,6 +93,16 @@ void STGInput_KeyboardState_Update(STGInput_KeyboardState* keyboard)
             case STGINPUT_BUTTONSTATE_NAME_RELEASED:
             {
                 keyboard->button[i].state = STGINPUT_BUTTONSTATE_NAME_UP;
+            } break;
+            
+            case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK:
+            {
+                keyboard->button[i].state = STGINPUT_BUTTONSTATE_NAME_DOWN;
+            } break;
+            
+            case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK_THEN_RELEASED:
+            {
+                keyboard->button[i].state = STGINPUT_BUTTONSTATE_NAME_RELEASED;
             } break;
         }
     }

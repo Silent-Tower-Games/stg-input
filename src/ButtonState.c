@@ -8,6 +8,8 @@ int STGInput_ButtonState_Name_IsDown(STGInput_ButtonState_Name buttonState)
         case STGINPUT_BUTTONSTATE_NAME_DOWN_REPEAT:
         case STGINPUT_BUTTONSTATE_NAME_PRESSED:
         case STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED:
+        case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK:
+        case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK_THEN_RELEASED:
         {
             return 1;
         }
@@ -18,13 +20,15 @@ int STGInput_ButtonState_Name_IsDown(STGInput_ButtonState_Name buttonState)
 
 int STGInput_ButtonState_Name_IsPressed(STGInput_ButtonState_Name buttonState)
 {
-    if(
-        buttonState == STGINPUT_BUTTONSTATE_NAME_PRESSED
-        ||
-        buttonState == STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED
-    )
+    switch(buttonState)
     {
-        return 1;
+        case STGINPUT_BUTTONSTATE_NAME_PRESSED:
+        case STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED:
+        case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK:
+        case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK_THEN_RELEASED:
+        {
+            return 1;
+        }
     }
     
     return 0;
@@ -48,7 +52,11 @@ char* STGInput_ButtonState_Name_ToString(STGInput_ButtonState_Name buttonState)
             return "Released";
         case STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED:
             return "Pressed Then Released";
+        case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK:
+            return "Double Clicked";
+        case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK_THEN_RELEASED:
+            return "Double Clicked Then Released";
    }
    
-   return 0;
+   return "---";
 }

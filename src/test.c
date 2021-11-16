@@ -2,6 +2,9 @@
 #include <SDL2/SDL.h>
 #include "STGInput.h"
 
+// TODO: Gamepad state
+// TODO: Mouse state
+
 int main()
 {
     printf("Hello, World!\n");
@@ -38,7 +41,7 @@ int main()
             STGInput_Event(input, event);
         }
         
-        if(STGInput_ButtonState_Name_IsDown(input->keyboard.button[1].state))
+        if(STGInput_ButtonState_Name_IsPressed(input->keyboard.button[1].state))
         {
             printf("Enter! `%s`\n", STGInput_ButtonState_Name_ToString(input->keyboard.button[1].state));
         }
