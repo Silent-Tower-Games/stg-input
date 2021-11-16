@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include "STGInput.h"
 
+// TODO: Move much of KeyboardState_Update into a deeper level: ButtonState_Update
 // TODO: Gamepad state
 // TODO: Mouse state
 
@@ -41,7 +42,7 @@ int main()
             STGInput_Event(input, event);
         }
         
-        if(STGInput_ButtonState_Name_IsPressed(input->keyboard.button[1].state))
+        if(STGInput_ButtonState_Name_IsDown(input->keyboard.button[1].state))
         {
             printf("Enter! `%s`\n", STGInput_ButtonState_Name_ToString(input->keyboard.button[1].state));
         }
