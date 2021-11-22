@@ -1,9 +1,16 @@
 #pragma once
 
-typedef enum MouseButtons
+typedef enum STGInput_MouseButtons
 {
-    MOUSEBUTTONS_INVALID = -1,
     MOUSEBUTTONS_LEFTCLICK,
     MOUSEBUTTONS_MIDDLECLICK,
     MOUSEBUTTONS_RIGHTCLICK,
-} MouseButtons;
+} STGInput_MouseButtons;
+
+typedef struct STGInput_MouseState
+{
+    int X;
+    int Y;
+} STGInput_MouseState;
+
+void STGInput_MouseState_Update(STGInput_MouseState* mouseState);

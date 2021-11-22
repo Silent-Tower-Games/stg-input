@@ -4,7 +4,9 @@
 
 // TODO: Move much of KeyboardState_Update into a deeper level: ButtonState_Update
 // TODO: Gamepad state
+// TODO: Gamepad state profile, wherein you can calibrate axes & remap buttons
 // TODO: Mouse state
+// TODO: Write comments
 
 int main()
 {

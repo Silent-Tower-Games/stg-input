@@ -26,7 +26,7 @@ void STGInput_KeyboardState_Event(STGInput_KeyboardState* keyboard, SDL_Event ev
             {
                 keyboard->button[index].state = STGINPUT_BUTTONSTATE_NAME_DOWN_REPEAT;
             }
-            else if(keyboard->button[index].lastPressed > 0) // pressed & less than 30 frames since last press
+            else if(keyboard->button[index].lastPressed > 0)
             {
                 keyboard->button[index].state = STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK;
                 
@@ -66,6 +66,7 @@ void STGInput_KeyboardState_Update(STGInput_KeyboardState* keyboard)
             keyboard->button[i].state == STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED
         )
         {
+            // TODO: This number is magical :) should probably be swapped out for a compiler flag or something
             keyboard->button[i].lastPressed = 30;
         }
         else

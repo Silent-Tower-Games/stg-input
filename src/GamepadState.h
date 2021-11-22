@@ -1,6 +1,8 @@
 #pragma once
 
-typedef enum GamepadButtons
+#define STGINPUT_GAMEPADSTATELIST_DEFAULT_COUNT 8
+
+typedef enum STGInput_GamepadButtons
 {
     GPB_INVALID = -1,
     // SDL_CONTROLER_BUTTON copies
@@ -30,4 +32,22 @@ typedef enum GamepadButtons
     GPB_STICK_RIGHT_RIGHT,
     GPB_STICK_RIGHT_DOWN,
     GPB_STICK_RIGHT_UP,
-} GamepadButtons;
+} STGInput_GamepadButtons;
+
+typedef struct STGInput_GamepadState
+{
+    int test;
+} STGInput_GamepadState;
+
+typedef struct STGInput_GamepadStateList
+{
+    int allocated;
+    int count;
+    STGInput_GamepadState* states;
+} STGInput_GamepadStateList;
+
+STGInput_GamepadStateList STGInput_GamepadStateList_Create();
+
+void STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list);
+
+void STGInput_GamepadState_Event(STGInput_GamepadStateList* gamepadStateList);
