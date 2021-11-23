@@ -17,6 +17,20 @@ void STGInput_Event(STGInput* input, SDL_Event event)
         {
             STGInput_KeyboardState_Event(&input->keyboard, event);
         } break;
+        
+        case SDL_CONTROLLERDEVICEADDED:
+        {
+            printf("Gamepad #%d plugged in\n", event.cdevice.which);
+            
+            SDL_GameController* controller = SDL_GameControllerOpen(event.cdevice.which);
+            
+            printf("Name: %s\n", SDL_GameControllerName(controller));
+        } break;
+        
+        case SDL_CONTROLLERDEVICEREMOVED:
+        {
+            printf("Gamepad #%d removed\n", event.cdevice.which);
+        } break;
     }
 }
 
