@@ -1,5 +1,10 @@
 #pragma once
 
+#define STGINPUT_BUTTONSTATE_EVENT_DOWN 1
+#define STGINPUT_BUTTONSTATE_EVENT_UP 0
+#define STGINPUT_BUTTONSTATE_EVENT_REPEAT 1
+#define STGINPUT_BUTTONSTATE_EVENT_NOTREPEAT 0
+
 typedef enum STGInput_ButtonState_Name
 {
     STGINPUT_BUTTONSTATE_NAME_INVALID = -1,
@@ -20,8 +25,16 @@ typedef struct STGInput_ButtonState
     int lastPressed;
 } STGInput_ButtonState;
 
-int STGInput_ButtonState_Name_IsDown(STGInput_ButtonState_Name buttonState);
+STGInput_ButtonState STGInput_ButtonState_Event(
+    STGInput_ButtonState buttonState,
+    char down,
+    char repeat
+);
 
-int STGInput_ButtonState_Name_IsPressed(STGInput_ButtonState_Name buttonState);
+STGInput_ButtonState STGInput_ButtonState_Update(STGInput_ButtonState buttonState);
+
+char STGInput_ButtonState_Name_IsDown(STGInput_ButtonState_Name buttonState);
+
+char STGInput_ButtonState_Name_IsPressed(STGInput_ButtonState_Name buttonState);
 
 char* STGInput_ButtonState_Name_ToString(STGInput_ButtonState_Name buttonState);

@@ -3,6 +3,8 @@
 
 static int STGInput_KeyboardState_KeyCode_Index(SDL_KeyCode code)
 {
+    // TODO: Is there a faster way to do this? This is O(n)
+    
     for(int i = 0; i < STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH; i++)
     {
         if(code == STGInput_KeyboardState_Keycodes[i])
@@ -22,36 +24,20 @@ void STGInput_KeyboardState_Event(STGInput_KeyboardState* keyboard, SDL_Event ev
     {
         case SDL_KEYDOWN:
         {
-            if(event.key.repeat)
-            {
-                keyboard->button[index].state = STGINPUT_BUTTONSTATE_NAME_DOWN_REPEAT;
-            }
-            else if(keyboard->button[index].lastPressed > 0)
-            {
-                keyboard->button[index].state = STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK;
-                
-                keyboard->button[index].lastPressed = 0;
-            }
-            else
-            {
-                keyboard->button[index].state = STGINPUT_BUTTONSTATE_NAME_PRESSED;
-            }
+            keyboard->button[index] = STGInput_ButtonState_Event(
+                keyboard->button[index],
+                STGINPUT_BUTTONSTATE_EVENT_DOWN,
+                event.key.repeat
+            );
         } break;
         
         case SDL_KEYUP:
         {
-            if(keyboard->button[index].state == STGINPUT_BUTTONSTATE_NAME_PRESSED)
-            {
-                keyboard->button[index].state = STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED;
-            }
-            else if(keyboard->button[index].state == STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK)
-            {
-                keyboard->button[index].state = STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK_THEN_RELEASED;
-            }
-            else
-            {
-                keyboard->button[index].state = STGINPUT_BUTTONSTATE_NAME_RELEASED;
-            }
+            keyboard->button[index] = STGInput_ButtonState_Event(
+                keyboard->button[index],
+                STGINPUT_BUTTONSTATE_EVENT_UP,
+                STGINPUT_BUTTONSTATE_EVENT_NOTREPEAT
+            );
         } break;
     }
 }
@@ -60,52 +46,7 @@ void STGInput_KeyboardState_Update(STGInput_KeyboardState* keyboard)
 {
     for(int i = 0; i < STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH; i++)
     {
-        if(
-            keyboard->button[i].state == STGINPUT_BUTTONSTATE_NAME_PRESSED
-            ||
-            keyboard->button[i].state == STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED
-        )
-        {
-            // TODO: This number is magical :) should probably be swapped out for a compiler flag or something
-            keyboard->button[i].lastPressed = 30;
-        }
-        else
-        {
-            keyboard->button[i].lastPressed--;
-        }
-        
-        switch(keyboard->button[i].state)
-        {
-            case STGINPUT_BUTTONSTATE_NAME_DOWN_REPEAT:
-            {
-                keyboard->button[i].state = STGINPUT_BUTTONSTATE_NAME_DOWN;
-            } break;
-            
-            case STGINPUT_BUTTONSTATE_NAME_PRESSED:
-            {
-                keyboard->button[i].state = STGINPUT_BUTTONSTATE_NAME_DOWN;
-            } break;
-            
-            case STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED:
-            {
-                keyboard->button[i].state = STGINPUT_BUTTONSTATE_NAME_RELEASED;
-            } break;
-            
-            case STGINPUT_BUTTONSTATE_NAME_RELEASED:
-            {
-                keyboard->button[i].state = STGINPUT_BUTTONSTATE_NAME_UP;
-            } break;
-            
-            case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK:
-            {
-                keyboard->button[i].state = STGINPUT_BUTTONSTATE_NAME_DOWN;
-            } break;
-            
-            case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK_THEN_RELEASED:
-            {
-                keyboard->button[i].state = STGINPUT_BUTTONSTATE_NAME_RELEASED;
-            } break;
-        }
+        keyboard->button[i] = STGInput_ButtonState_Update(keyboard->button[i]);
     }
 }
 

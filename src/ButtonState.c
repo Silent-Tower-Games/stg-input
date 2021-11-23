@@ -1,6 +1,104 @@
 #include "ButtonState.h"
 
-int STGInput_ButtonState_Name_IsDown(STGInput_ButtonState_Name buttonState)
+STGInput_ButtonState STGInput_ButtonState_Event(
+    STGInput_ButtonState buttonState,
+    char down,
+    char repeat
+)
+{
+    switch(down)
+    {
+        case 1:
+        {
+            if(repeat)
+            {
+                buttonState.state = STGINPUT_BUTTONSTATE_NAME_DOWN_REPEAT;
+            }
+            else if(buttonState.lastPressed > 0)
+            {
+                buttonState.state = STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK;
+                
+                buttonState.lastPressed = 0;
+            }
+            else
+            {
+                buttonState.state = STGINPUT_BUTTONSTATE_NAME_PRESSED;
+            }
+        } break;
+        
+        case 0:
+        {
+            if(buttonState.state == STGINPUT_BUTTONSTATE_NAME_PRESSED)
+            {
+                buttonState.state = STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED;
+            }
+            else if(buttonState.state == STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK)
+            {
+                buttonState.state = STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK_THEN_RELEASED;
+            }
+            else
+            {
+                buttonState.state = STGINPUT_BUTTONSTATE_NAME_RELEASED;
+            }
+        } break;
+    }
+    
+    return buttonState;
+}
+
+STGInput_ButtonState STGInput_ButtonState_Update(STGInput_ButtonState buttonState)
+{
+    if(
+        buttonState.state == STGINPUT_BUTTONSTATE_NAME_PRESSED
+        ||
+        buttonState.state == STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED
+    )
+    {
+        // TODO: This number is magical :) should probably be swapped out for a compiler flag or something
+        buttonState.lastPressed = 30;
+    }
+    else
+    {
+        buttonState.lastPressed--;
+    }
+    
+    switch(buttonState.state)
+    {
+        case STGINPUT_BUTTONSTATE_NAME_DOWN_REPEAT:
+        {
+            buttonState.state = STGINPUT_BUTTONSTATE_NAME_DOWN;
+        } break;
+        
+        case STGINPUT_BUTTONSTATE_NAME_PRESSED:
+        {
+            buttonState.state = STGINPUT_BUTTONSTATE_NAME_DOWN;
+        } break;
+        
+        case STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED:
+        {
+            buttonState.state = STGINPUT_BUTTONSTATE_NAME_RELEASED;
+        } break;
+        
+        case STGINPUT_BUTTONSTATE_NAME_RELEASED:
+        {
+            buttonState.state = STGINPUT_BUTTONSTATE_NAME_UP;
+        } break;
+        
+        case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK:
+        {
+            buttonState.state = STGINPUT_BUTTONSTATE_NAME_DOWN;
+        } break;
+        
+        case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK_THEN_RELEASED:
+        {
+            buttonState.state = STGINPUT_BUTTONSTATE_NAME_RELEASED;
+        } break;
+    }
+    
+    return buttonState;
+}
+
+char STGInput_ButtonState_Name_IsDown(STGInput_ButtonState_Name buttonState)
 {
     switch(buttonState)
     {
@@ -18,7 +116,7 @@ int STGInput_ButtonState_Name_IsDown(STGInput_ButtonState_Name buttonState)
     return 0;
 }
 
-int STGInput_ButtonState_Name_IsPressed(STGInput_ButtonState_Name buttonState)
+char STGInput_ButtonState_Name_IsPressed(STGInput_ButtonState_Name buttonState)
 {
     switch(buttonState)
     {
