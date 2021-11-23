@@ -5,6 +5,7 @@
 // TODO: Gamepad state
 // TODO: Gamepad state profile, wherein you can calibrate axes & remap buttons
 // TODO: Mouse state
+// TODO: Hide all struct properties & use functions directly with STGInput, or with a state returned from that
 // TODO: Write comments
 
 int main()
