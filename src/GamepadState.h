@@ -56,16 +56,20 @@ typedef struct STGInput_GamepadStateList
     STGInput_GamepadState* states;
 } STGInput_GamepadStateList;
 
-STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which);
-
-void STGInput_GamepadState_Destroy(STGInput_GamepadState* gamepad);
-
 STGInput_GamepadStateList STGInput_GamepadStateList_Create();
 
 void STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_GamepadState gamepad);
 
+void STGInput_GamepadStateList_Remove(STGInput_GamepadStateList* list, Uint32 id);
+
+STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Uint32 id);
+
 void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event event);
 
 void STGInput_GamepadStateList_Update(STGInput_GamepadStateList* list);
+
+STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which);
+
+void STGInput_GamepadState_Destroy(STGInput_GamepadState* gamepad);
 
 int STGInput_GamepadState_ButtonIndex(SDL_GameControllerButton button);

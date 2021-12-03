@@ -52,9 +52,9 @@ int main()
             printf("Enter! `%s`\n", STGInput_ButtonState_Name_ToString(input->keyboard.button[1].state));
         }
         
-        if(STGInput_ButtonState_Name_IsDown(input->gamepads.states[0].button[1].state))
+        if(STGInput_ButtonState_Name_IsDown(input->gamepads.states[0].button[0].state))
         {
-            printf("A! `%s`\n", STGInput_ButtonState_Name_ToString(input->gamepads.states[0].button[1].state));
+            printf("A! `%s`\n", STGInput_ButtonState_Name_ToString(input->gamepads.states[0].button[0].state));
         }
         
         // Approximately 60fps. Doesn't need to be perfect for this test
