@@ -58,11 +58,13 @@ typedef struct STGInput_GamepadStateList
 
 STGInput_GamepadStateList STGInput_GamepadStateList_Create();
 
-void STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_GamepadState gamepad);
+int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_GamepadState gamepad);
 
 void STGInput_GamepadStateList_Remove(STGInput_GamepadStateList* list, Uint32 id);
 
 STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Uint32 id);
+
+int STGInput_GamepadStateList_Index_FindById(STGInput_GamepadStateList* list, Uint32 id);
 
 void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event event);
 

@@ -2,9 +2,6 @@
 #include <SDL2/SDL.h>
 #include "STGInput.h"
 
-// TODO: Gamepad state
-// TODO: Removing gamepads from middle of stack
-//////// e.g. gamepad[1] getting removed means gamepad[2] is now gamepad[1]
 // TODO: Gamepad player index? E.g. "Player 1", which may or may not be gamepad[0]
 // TODO: Gamepad state profile, wherein you can calibrate axes & remap buttons
 // TODO: Mouse state

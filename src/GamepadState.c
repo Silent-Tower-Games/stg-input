@@ -17,8 +17,13 @@ STGInput_GamepadStateList STGInput_GamepadStateList_Create()
     return list;
 }
 
-void STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_GamepadState gamepad)
+int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_GamepadState gamepad)
 {
+    if(gamepad.joystick == NULL)
+    {
+        return list->count;
+    }
+    
     if(list->count >= list->allocated)
     {
         STGInput_GamepadStateList_Expand(list);
@@ -26,10 +31,22 @@ void STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_Gam
     
     list->states[list->count] = gamepad;
     
-    list->count++;
+    return list->count++;
 }
 
 STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Uint32 id)
+{
+    int gamepadIndex = STGInput_GamepadStateList_Index_FindById(list, id);
+    
+    if(gamepadIndex == -1)
+    {
+        return NULL;
+    }
+    
+    return &list->states[gamepadIndex];
+}
+
+int STGInput_GamepadStateList_Index_FindById(STGInput_GamepadStateList* list, Uint32 id)
 {
     for(int i = 0; i < list->count; i++)
     {
@@ -38,10 +55,10 @@ STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateL
             continue;
         }
         
-        return &list->states[i];
+        return i;
     }
     
-    return NULL;
+    return -1;
 }
 
 void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event event)
@@ -52,22 +69,29 @@ void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event 
         {
             STGInput_GamepadState gamepad = STGInput_GamepadState_Create(event.cdevice.which);
             
-            // Possibly add some validation here? Make sure that there's at least one not-null value?
             STGInput_GamepadStateList_Add(list, gamepad);
-            
-            printf("Added gamepad: `%s`\n", SDL_JoystickName(gamepad.joystick));
         } break;
         
         case SDL_CONTROLLERDEVICEREMOVED:
         {
-            printf("Removed gamepad: `%s`\n", SDL_JoystickNameForIndex(event.cdevice.which));
+            int gamepadIndex = STGInput_GamepadStateList_Index_FindById(list, event.cdevice.which);
             
-            for(int i = 0; i < list->count; i++)
+            if(gamepadIndex == -1)
             {
-                if(list->states[i].id != event.cdevice.which)
-                {
-                    //
-                }
+                break;
+            }
+            
+            STGInput_GamepadState_Destroy(&list->states[gamepadIndex]);
+            
+            list->count--;
+            
+            if(gamepadIndex < list->count)
+            {
+                memcpy(
+                    &list->states[gamepadIndex],
+                    &list->states[gamepadIndex + 1],
+                    sizeof(STGInput_GamepadState) * (list->count - gamepadIndex)
+                );
             }
         } break;
         
@@ -115,7 +139,10 @@ STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which)
     memset(&gamepad, 0, sizeof(gamepad));
     
     gamepad.joystick = SDL_JoystickOpen(which);
+    gamepad.id = SDL_JoystickInstanceID(gamepad.joystick);
+    
     gamepad.controller = SDL_GameControllerOpen(which);
+    
     gamepad.haptic = SDL_HapticOpen(which);
     
     return gamepad;
