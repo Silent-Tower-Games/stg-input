@@ -19,17 +19,11 @@ void STGInput_Event(STGInput* input, SDL_Event event)
         } break;
         
         case SDL_CONTROLLERDEVICEADDED:
-        {
-            printf("Gamepad #%d plugged in\n", event.cdevice.which);
-            
-            SDL_GameController* controller = SDL_GameControllerOpen(event.cdevice.which);
-            
-            printf("Name: %s\n", SDL_GameControllerName(controller));
-        } break;
-        
         case SDL_CONTROLLERDEVICEREMOVED:
+        case SDL_CONTROLLERBUTTONDOWN:
+        case SDL_CONTROLLERBUTTONUP:
         {
-            printf("Gamepad #%d removed\n", event.cdevice.which);
+            STGInput_GamepadStateList_Event(&input->gamepads, event);
         } break;
     }
 }
@@ -37,6 +31,7 @@ void STGInput_Event(STGInput* input, SDL_Event event)
 void STGInput_Update(STGInput* input)
 {
     STGInput_KeyboardState_Update(&input->keyboard);
+    STGInput_GamepadStateList_Update(&input->gamepads);
 }
 
 void STGInput_Destroy(STGInput* input)
