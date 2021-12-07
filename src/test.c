@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 #include "STGInput.h"
 
-// TODO: Gamepad player index? E.g. "Player 1", which may or may not be gamepad[0]
+// TODO: Change adding/removing gamepads from a linear array of valid gamepads to an array with empty slots
 // TODO: Gamepad state profile, wherein you can calibrate axes & remap buttons
 // TODO: Mouse state
 // TODO: Hide all struct properties & use functions directly with STGInput, or with a state returned from that

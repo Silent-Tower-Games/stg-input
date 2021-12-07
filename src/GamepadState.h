@@ -4,6 +4,8 @@
 #include "ButtonState.h"
 
 #define STGINPUT_GAMEPADSTATELIST_DEFAULT_COUNT 8
+#define STGINPUT_GAMEPADSTATE_ID_INVALID -1
+#define STGINPUT_GAMEPADSTATE_INDEX_INVALID -1
 
 typedef enum STGInput_GamepadButtons
 {
@@ -42,7 +44,7 @@ static SDL_GameControllerButton SDL_GameControllerButtons_To_STGInput_GamepadBut
 
 typedef struct STGInput_GamepadState
 {
-    Sint32 id;
+    SDL_JoystickID id;
     STGInput_ButtonState button[25];
     SDL_Haptic* haptic;
     SDL_Joystick* joystick;

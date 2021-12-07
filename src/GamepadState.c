@@ -5,6 +5,11 @@ static void STGInput_GamepadStateList_Expand(STGInput_GamepadStateList* list)
 {
     list->allocated += STGINPUT_GAMEPADSTATELIST_DEFAULT_COUNT;
     list->states = realloc(list->states, sizeof(STGInput_GamepadState) * list->allocated);
+    
+    for(int i = list->count; i < list->allocated; i++)
+    {
+        list->states[i].id = STGINPUT_GAMEPADSTATE_ID_INVALID;
+    }
 }
 
 STGInput_GamepadStateList STGInput_GamepadStateList_Create()
@@ -19,11 +24,26 @@ STGInput_GamepadStateList STGInput_GamepadStateList_Create()
 
 int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_GamepadState gamepad)
 {
-    if(gamepad.joystick == NULL)
+    if(gamepad.id <= STGINPUT_GAMEPADSTATE_ID_INVALID)
     {
-        return list->count;
+        return STGINPUT_GAMEPADSTATE_INDEX_INVALID;
     }
     
+    // Look for an empty state to fill
+    for(int i = 0; i < list->count; i++)
+    {
+        if(list->states[i].id != STGINPUT_GAMEPADSTATE_ID_INVALID)
+        {
+            continue;
+        }
+        
+        list->states[i] = gamepad;
+        
+        return i;
+    }
+    
+    // If you can't find an empty state within count, add a new index
+    // Expand the list if necessary
     if(list->count >= list->allocated)
     {
         STGInput_GamepadStateList_Expand(list);
@@ -31,7 +51,11 @@ int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_Game
     
     list->states[list->count] = gamepad;
     
-    return list->count++;
+    const int index = list->count;
+    
+    list->count++;
+    
+    return index;
 }
 
 STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Uint32 id)
@@ -69,30 +93,23 @@ void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event 
         {
             STGInput_GamepadState gamepad = STGInput_GamepadState_Create(event.cdevice.which);
             
-            STGInput_GamepadStateList_Add(list, gamepad);
+            const int index = STGInput_GamepadStateList_Add(list, gamepad);
+            
+            printf("Added gamepad #%d\n", index);
         } break;
         
         case SDL_CONTROLLERDEVICEREMOVED:
         {
             int gamepadIndex = STGInput_GamepadStateList_Index_FindById(list, event.cdevice.which);
             
-            if(gamepadIndex == -1)
+            if(gamepadIndex <= STGINPUT_GAMEPADSTATE_ID_INVALID)
             {
                 break;
             }
             
             STGInput_GamepadState_Destroy(&list->states[gamepadIndex]);
             
-            list->count--;
-            
-            if(gamepadIndex < list->count)
-            {
-                memcpy(
-                    &list->states[gamepadIndex],
-                    &list->states[gamepadIndex + 1],
-                    sizeof(STGInput_GamepadState) * (list->count - gamepadIndex)
-                );
-            }
+            printf("Removed gamepad #%d\n", gamepadIndex);
         } break;
         
         case SDL_CONTROLLERBUTTONDOWN:
@@ -126,6 +143,11 @@ void STGInput_GamepadStateList_Update(STGInput_GamepadStateList* list)
 {
     for(int i = 0; i < list->count; i++)
     {
+        if(list->states[i].id <= STGINPUT_GAMEPADSTATE_ID_INVALID)
+        {
+            continue;
+        }
+        
         for(int j = 0; j < 25; j++)
         {
             list->states[i].button[j] = STGInput_ButtonState_Update(list->states[i].button[j]);
@@ -140,10 +162,22 @@ STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which)
     
     gamepad.joystick = SDL_JoystickOpen(which);
     gamepad.id = SDL_JoystickInstanceID(gamepad.joystick);
-    
     gamepad.controller = SDL_GameControllerOpen(which);
-    
     gamepad.haptic = SDL_HapticOpen(which);
+    
+    // Require everything to be valid except haptic
+    // Some controllers don't need haptic
+    // TODO: Can we get away with just a Joystick? Idk if GameController is necessary
+    if(
+        gamepad.joystick == NULL
+        ||
+        gamepad.controller == NULL
+        ||
+        gamepad.id <= STGINPUT_GAMEPADSTATE_ID_INVALID
+    )
+    {
+        STGInput_GamepadState_Destroy(&gamepad);
+    }
     
     return gamepad;
 }
@@ -153,6 +187,7 @@ void STGInput_GamepadState_Destroy(STGInput_GamepadState* gamepad)
     SDL_HapticClose(gamepad->haptic);
     SDL_GameControllerClose(gamepad->controller);
     SDL_JoystickClose(gamepad->joystick);
+    gamepad->id = STGINPUT_GAMEPADSTATE_ID_INVALID;
 }
 
 int STGInput_GamepadState_ButtonIndex(SDL_GameControllerButton button)
