@@ -3,10 +3,12 @@
 
 static void STGInput_GamepadStateList_Expand(STGInput_GamepadStateList* list)
 {
+    const int allocatedOriginal = list->allocated;
+    
     list->allocated += STGINPUT_GAMEPADSTATELIST_DEFAULT_COUNT;
     list->states = realloc(list->states, sizeof(STGInput_GamepadState) * list->allocated);
     
-    for(int i = list->count; i < list->allocated; i++)
+    for(int i = allocatedOriginal; i < list->allocated; i++)
     {
         list->states[i].id = STGINPUT_GAMEPADSTATE_ID_INVALID;
     }
@@ -30,7 +32,7 @@ int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_Game
     }
     
     // Look for an empty state to fill
-    for(int i = 0; i < list->count; i++)
+    for(int i = 0; i < list->allocated; i++)
     {
         if(list->states[i].id != STGINPUT_GAMEPADSTATE_ID_INVALID)
         {
@@ -42,20 +44,14 @@ int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_Game
         return i;
     }
     
-    // If you can't find an empty state within count, add a new index
-    // Expand the list if necessary
-    if(list->count >= list->allocated)
-    {
-        STGInput_GamepadStateList_Expand(list);
-    }
+    // If you can't find an empty state within count, expand the list
+    const int allocatedOriginal = list->allocated;
     
-    list->states[list->count] = gamepad;
+    STGInput_GamepadStateList_Expand(list);
     
-    const int index = list->count;
+    list->states[allocatedOriginal] = gamepad;
     
-    list->count++;
-    
-    return index;
+    return allocatedOriginal;
 }
 
 STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Uint32 id)
@@ -72,7 +68,7 @@ STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateL
 
 int STGInput_GamepadStateList_Index_FindById(STGInput_GamepadStateList* list, Uint32 id)
 {
-    for(int i = 0; i < list->count; i++)
+    for(int i = 0; i < list->allocated; i++)
     {
         if(list->states[i].id != id)
         {
@@ -141,7 +137,7 @@ void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event 
 
 void STGInput_GamepadStateList_Update(STGInput_GamepadStateList* list)
 {
-    for(int i = 0; i < list->count; i++)
+    for(int i = 0; i < list->allocated; i++)
     {
         if(list->states[i].id <= STGINPUT_GAMEPADSTATE_ID_INVALID)
         {
