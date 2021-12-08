@@ -2,7 +2,6 @@
 #include <SDL2/SDL.h>
 #include "STGInput.h"
 
-// TODO: Maybe give GamepadStateList a var for highest used index? To make for loops shorter
 // TODO: Gamepad state profile, wherein you can calibrate axes & remap buttons
 // TODO: Mouse state
 // TODO: Hide all struct properties & use functions directly with STGInput, or with a state returned from that

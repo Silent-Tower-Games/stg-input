@@ -54,6 +54,7 @@ typedef struct STGInput_GamepadState
 typedef struct STGInput_GamepadStateList
 {
     int allocated;
+    int highest;
     STGInput_GamepadState* states;
 } STGInput_GamepadStateList;
 

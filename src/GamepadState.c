@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <math.h>
 #include "GamepadState.h"
 
 static void STGInput_GamepadStateList_Expand(STGInput_GamepadStateList* list)
@@ -41,6 +42,8 @@ int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_Game
         
         list->states[i] = gamepad;
         
+        list->highest = fmax(list->highest, i);
+        
         return i;
     }
     
@@ -51,7 +54,38 @@ int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_Game
     
     list->states[allocatedOriginal] = gamepad;
     
+    list->highest = fmax(list->highest, allocatedOriginal);
+    
     return allocatedOriginal;
+}
+
+void STGInput_GamepadStateList_Remove(STGInput_GamepadStateList* list, Uint32 id)
+{
+    int gamepadIndex = STGInput_GamepadStateList_Index_FindById(list, id);
+    
+    if(gamepadIndex <= STGINPUT_GAMEPADSTATE_ID_INVALID)
+    {
+        return;
+    }
+    
+    STGInput_GamepadState_Destroy(&list->states[gamepadIndex]);
+    
+    if(gamepadIndex == list->highest)
+    {
+        int nextHighest = -1;
+        
+        for(int i = 0; i < list->highest; i++)
+        {
+            if(list->states[i].id <= STGINPUT_GAMEPADSTATE_ID_INVALID)
+            {
+                continue;
+            }
+            
+            nextHighest = fmax(nextHighest, i);
+        }
+        
+        list->highest = nextHighest;
+    }
 }
 
 STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Uint32 id)
@@ -68,7 +102,7 @@ STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateL
 
 int STGInput_GamepadStateList_Index_FindById(STGInput_GamepadStateList* list, Uint32 id)
 {
-    for(int i = 0; i < list->allocated; i++)
+    for(int i = 0; i <= list->highest; i++)
     {
         if(list->states[i].id != id)
         {
@@ -90,22 +124,11 @@ void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event 
             STGInput_GamepadState gamepad = STGInput_GamepadState_Create(event.cdevice.which);
             
             const int index = STGInput_GamepadStateList_Add(list, gamepad);
-            
-            printf("Added gamepad #%d\n", index);
         } break;
         
         case SDL_CONTROLLERDEVICEREMOVED:
         {
-            int gamepadIndex = STGInput_GamepadStateList_Index_FindById(list, event.cdevice.which);
-            
-            if(gamepadIndex <= STGINPUT_GAMEPADSTATE_ID_INVALID)
-            {
-                break;
-            }
-            
-            STGInput_GamepadState_Destroy(&list->states[gamepadIndex]);
-            
-            printf("Removed gamepad #%d\n", gamepadIndex);
+            STGInput_GamepadStateList_Remove(list, event.cdevice.which);
         } break;
         
         case SDL_CONTROLLERBUTTONDOWN:
@@ -137,7 +160,7 @@ void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event 
 
 void STGInput_GamepadStateList_Update(STGInput_GamepadStateList* list)
 {
-    for(int i = 0; i < list->allocated; i++)
+    for(int i = 0; i <= list->highest; i++)
     {
         if(list->states[i].id <= STGINPUT_GAMEPADSTATE_ID_INVALID)
         {
