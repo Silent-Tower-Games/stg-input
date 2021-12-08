@@ -42,6 +42,11 @@ typedef enum STGInput_GamepadButtons
 static STGInput_GamepadButtons STGInput_GamepadButtons_To_SDL_GameControllerButtons[15];
 static SDL_GameControllerButton SDL_GameControllerButtons_To_STGInput_GamepadButtons[15];
 
+typedef struct STGInput_GamepadStateProfile
+{
+    STGInput_ButtonState button[15];
+} STGInput_GamepadStateProfile;
+
 typedef struct STGInput_GamepadState
 {
     SDL_JoystickID id;
@@ -58,6 +63,12 @@ typedef struct STGInput_GamepadStateList
     STGInput_GamepadState* states;
 } STGInput_GamepadStateList;
 
+STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which);
+
+void STGInput_GamepadState_Destroy(STGInput_GamepadState* gamepad);
+
+int STGInput_GamepadState_ButtonIndex(SDL_GameControllerButton button);
+
 STGInput_GamepadStateList STGInput_GamepadStateList_Create();
 
 int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_GamepadState gamepad);
@@ -72,8 +83,4 @@ void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event 
 
 void STGInput_GamepadStateList_Update(STGInput_GamepadStateList* list);
 
-STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which);
-
-void STGInput_GamepadState_Destroy(STGInput_GamepadState* gamepad);
-
-int STGInput_GamepadState_ButtonIndex(SDL_GameControllerButton button);
+STGInput_GamepadStateProfile STGInput_GamepadStateProfile_Create();

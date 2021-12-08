@@ -2,6 +2,56 @@
 #include <math.h>
 #include "GamepadState.h"
 
+STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which)
+{
+    STGInput_GamepadState gamepad;
+    memset(&gamepad, 0, sizeof(gamepad));
+    
+    gamepad.joystick = SDL_JoystickOpen(which);
+    gamepad.id = SDL_JoystickInstanceID(gamepad.joystick);
+    gamepad.controller = SDL_GameControllerOpen(which);
+    gamepad.haptic = SDL_HapticOpen(which);
+    
+    // Require everything to be valid except haptic
+    // Some controllers don't need haptic
+    // TODO: Can we get away with just a Joystick? Idk if GameController is necessary
+    if(
+        gamepad.joystick == NULL
+        ||
+        gamepad.controller == NULL
+        ||
+        gamepad.id <= STGINPUT_GAMEPADSTATE_ID_INVALID
+    )
+    {
+        STGInput_GamepadState_Destroy(&gamepad);
+    }
+    
+    return gamepad;
+}
+
+void STGInput_GamepadState_Destroy(STGInput_GamepadState* gamepad)
+{
+    SDL_HapticClose(gamepad->haptic);
+    SDL_GameControllerClose(gamepad->controller);
+    SDL_JoystickClose(gamepad->joystick);
+    gamepad->id = STGINPUT_GAMEPADSTATE_ID_INVALID;
+}
+
+int STGInput_GamepadState_ButtonIndex(SDL_GameControllerButton button)
+{
+    for(int i = 0; i < 15; i++)
+    {
+        if(SDL_GameControllerButtons_To_STGInput_GamepadButtons[i] != button)
+        {
+            continue;
+        }
+        
+        return i;
+    }
+    
+    return -1;
+}
+
 static void STGInput_GamepadStateList_Expand(STGInput_GamepadStateList* list)
 {
     const int allocatedOriginal = list->allocated;
@@ -174,54 +224,14 @@ void STGInput_GamepadStateList_Update(STGInput_GamepadStateList* list)
     }
 }
 
-STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which)
+STGInput_GamepadStateProfile STGInput_GamepadStateProfile_Create()
 {
-    STGInput_GamepadState gamepad;
-    memset(&gamepad, 0, sizeof(gamepad));
-    
-    gamepad.joystick = SDL_JoystickOpen(which);
-    gamepad.id = SDL_JoystickInstanceID(gamepad.joystick);
-    gamepad.controller = SDL_GameControllerOpen(which);
-    gamepad.haptic = SDL_HapticOpen(which);
-    
-    // Require everything to be valid except haptic
-    // Some controllers don't need haptic
-    // TODO: Can we get away with just a Joystick? Idk if GameController is necessary
-    if(
-        gamepad.joystick == NULL
-        ||
-        gamepad.controller == NULL
-        ||
-        gamepad.id <= STGINPUT_GAMEPADSTATE_ID_INVALID
-    )
-    {
-        STGInput_GamepadState_Destroy(&gamepad);
-    }
-    
-    return gamepad;
-}
-
-void STGInput_GamepadState_Destroy(STGInput_GamepadState* gamepad)
-{
-    SDL_HapticClose(gamepad->haptic);
-    SDL_GameControllerClose(gamepad->controller);
-    SDL_JoystickClose(gamepad->joystick);
-    gamepad->id = STGINPUT_GAMEPADSTATE_ID_INVALID;
-}
-
-int STGInput_GamepadState_ButtonIndex(SDL_GameControllerButton button)
-{
-    for(int i = 0; i < 15; i++)
-    {
-        if(SDL_GameControllerButtons_To_STGInput_GamepadButtons[i] != button)
-        {
-            continue;
-        }
-        
-        return i;
-    }
-    
-    return -1;
+    STGInput_GamepadStateProfile profile;
+    memset(
+        &profile.button,
+        SDL_GameControllerButtons_To_STGInput_GamepadButtons,
+        sizeof(SDL_GameControllerButtons_To_STGInput_GamepadButtons)
+    );
 }
 
 static STGInput_GamepadButtons STGInput_GamepadButtons_To_SDL_GameControllerButtons[15] = {
