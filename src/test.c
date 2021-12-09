@@ -3,13 +3,15 @@
 #include "STGInput.h"
 
 // Doing:
-// TODO: Gamepad axes
-// TODO: Gamepad state profile, wherein you can calibrate axes & remap buttons
+// TODO: Gamepad functions for getting state of given button
 
 // Later:
+// TODO: Gamepad state profile, wherein you can calibrate axes & remap buttons
+// TODO: Conevenience functions: keyboardIsDown(A) ... gamepadIsDown(PLAYERONE, A)
 // TODO: Mouse state
 // TODO: Hide all struct properties & use functions directly with STGInput, or with a state returned from that
 // TODO: Write comments
+// TODO: Unit tests
 
 int main()
 {
@@ -56,6 +58,8 @@ int main()
         {
             printf("A! `%s`\n", STGInput_ButtonState_Name_ToString(input->gamepads.states[0].button[0].state));
         }
+        
+        printf("%1.5f\n", input->gamepads.states[0].axis[0].percentage);
         
         // Approximately 60fps. Doesn't need to be perfect for this test
         SDL_Delay(16);

@@ -22,6 +22,7 @@ void STGInput_Event(STGInput* input, SDL_Event event)
         case SDL_CONTROLLERDEVICEREMOVED:
         case SDL_CONTROLLERBUTTONDOWN:
         case SDL_CONTROLLERBUTTONUP:
+        case SDL_CONTROLLERAXISMOTION:
         {
             STGInput_GamepadStateList_Event(&input->gamepads, event);
         } break;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include "AxisState.h"
 #include "ButtonState.h"
 
 #define STGINPUT_GAMEPADSTATELIST_DEFAULT_COUNT 8
@@ -11,10 +12,10 @@ typedef enum STGInput_GamepadButtons
 {
     // SDL_CONTROLER_BUTTON copies
     // TODO: Rename ABXY to up down left right?
-    STGINPUT_GAMEPADBUTTONS_A,
-    STGINPUT_GAMEPADBUTTONS_B,
-    STGINPUT_GAMEPADBUTTONS_X,
-    STGINPUT_GAMEPADBUTTONS_Y,
+    STGINPUT_GAMEPADBUTTONS_FACE_DOWN,
+    STGINPUT_GAMEPADBUTTONS_FACE_RIGHT,
+    STGINPUT_GAMEPADBUTTONS_FACE_LEFT,
+    STGINPUT_GAMEPADBUTTONS_FACE_TOP,
     STGINPUT_GAMEPADBUTTONS_BACK,
     STGINPUT_GAMEPADBUTTONS_GUIDE,
     STGINPUT_GAMEPADBUTTONS_START,
@@ -41,6 +42,7 @@ typedef enum STGInput_GamepadButtons
 
 static STGInput_GamepadButtons STGInput_GamepadButtons_To_SDL_GameControllerButtons[15];
 static SDL_GameControllerButton SDL_GameControllerButtons_To_STGInput_GamepadButtons[15];
+static SDL_GameControllerAxis STGInput_GamepadAxes[6];
 
 typedef struct STGInput_GamepadStateProfile
 {
@@ -51,6 +53,7 @@ typedef struct STGInput_GamepadState
 {
     SDL_JoystickID id;
     STGInput_ButtonState button[25];
+    STGInput_AxisState axis[6];
     SDL_Haptic* haptic;
     SDL_Joystick* joystick;
     SDL_GameController* controller;
@@ -68,6 +71,8 @@ STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which);
 void STGInput_GamepadState_Destroy(STGInput_GamepadState* gamepad);
 
 int STGInput_GamepadState_ButtonIndex(SDL_GameControllerButton button);
+
+int STGInput_GamepadState_AxisIndex(SDL_GameControllerAxis axis);
 
 STGInput_GamepadStateList STGInput_GamepadStateList_Create();
 
