@@ -3,7 +3,6 @@
 #include "STGInput.h"
 
 // Doing:
-// TODO: Keyboard functions for getting state of given button
 // TODO: Gamepad functions for getting state of given button
 
 // Later:
