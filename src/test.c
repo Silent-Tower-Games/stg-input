@@ -3,6 +3,7 @@
 #include "STGInput.h"
 
 // Doing:
+// TODO: Keyboard functions for getting state of given button
 // TODO: Gamepad functions for getting state of given button
 
 // Later:
@@ -49,7 +50,7 @@ int main()
             STGInput_Event(input, event);
         }
         
-        if(STGInput_ButtonState_Name_IsDown(input->keyboard.button[1].state))
+        if(STGInput_KeyboardState_Button_IsPressed(&input->keyboard, SDLK_RETURN))
         {
             printf("Enter! `%s`\n", STGInput_ButtonState_Name_ToString(input->keyboard.button[1].state));
         }
@@ -58,8 +59,6 @@ int main()
         {
             printf("A! `%s`\n", STGInput_ButtonState_Name_ToString(input->gamepads.states[0].button[0].state));
         }
-        
-        printf("%1.5f\n", input->gamepads.states[0].axis[0].percentage);
         
         // Approximately 60fps. Doesn't need to be perfect for this test
         SDL_Delay(16);

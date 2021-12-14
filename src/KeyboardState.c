@@ -13,12 +13,17 @@ static int STGInput_KeyboardState_KeyCode_Index(SDL_KeyCode code)
         }
     }
     
-    return 0;
+    return -1;
 }
 
 void STGInput_KeyboardState_Event(STGInput_KeyboardState* keyboard, SDL_Event event)
 {
     int index = STGInput_KeyboardState_KeyCode_Index(event.key.keysym.sym);
+    
+    if(index < 0 || index >= STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH)
+    {
+        return;
+    }
     
     switch(event.type)
     {
@@ -48,6 +53,28 @@ void STGInput_KeyboardState_Update(STGInput_KeyboardState* keyboard)
     {
         keyboard->button[i] = STGInput_ButtonState_Update(keyboard->button[i]);
     }
+}
+
+STGInput_ButtonState_Name STGInput_KeyboardState_Button_GetState(STGInput_KeyboardState* keyboard, SDL_KeyCode key)
+{
+    int index = STGInput_KeyboardState_KeyCode_Index(key);
+    
+    if(index < 0 || index >= STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH)
+    {
+        return STGINPUT_BUTTONSTATE_NAME_UP;
+    }
+    
+    return keyboard->button[index].state;
+}
+
+char STGInput_KeyboardState_Button_IsDown(STGInput_KeyboardState* keyboard, SDL_KeyCode key)
+{
+    return STGInput_ButtonState_Name_IsDown(STGInput_KeyboardState_Button_GetState(keyboard, key));
+}
+
+char STGInput_KeyboardState_Button_IsPressed(STGInput_KeyboardState* keyboard, SDL_KeyCode key)
+{
+    return STGInput_ButtonState_Name_IsPressed(STGInput_KeyboardState_Button_GetState(keyboard, key));
 }
 
 const SDL_KeyCode STGInput_KeyboardState_Keycodes[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH] = {
