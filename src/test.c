@@ -3,11 +3,9 @@
 #include "STGInput.h"
 
 // Doing:
-// TODO: Gamepad functions for getting state of given button
+// TODO: Gamepad state profile, wherein you can calibrate axes & remap buttons
 
 // Later:
-// TODO: Gamepad state profile, wherein you can calibrate axes & remap buttons
-// TODO: Conevenience functions: keyboardIsDown(A) ... gamepadIsDown(PLAYERONE, A)
 // TODO: Mouse state
 // TODO: Hide all struct properties & use functions directly with STGInput, or with a state returned from that
 // TODO: Write comments
@@ -32,6 +30,7 @@ int main()
         0
     );
     
+    STGInput_GamepadState* gamepadPlayerOne = NULL;
     int quit = 0;
     
     while(!quit)
@@ -49,14 +48,20 @@ int main()
             STGInput_Event(input, event);
         }
         
-        if(STGInput_KeyboardState_Button_IsPressed(&input->keyboard, SDLK_RETURN))
+        if(STGInput_KeyboardState_Button_IsPressedOrRepeated(&input->keyboard, SDLK_RETURN))
         {
-            printf("Enter! `%s`\n", STGInput_ButtonState_Name_ToString(input->keyboard.button[1].state));
+            printf("Enter!\n");
         }
         
-        if(STGInput_ButtonState_Name_IsDown(input->gamepads.states[0].button[0].state))
+        if(gamepadPlayerOne == NULL)
         {
-            printf("A! `%s`\n", STGInput_ButtonState_Name_ToString(input->gamepads.states[0].button[0].state));
+            printf("Setting...\n");
+            gamepadPlayerOne = STGInput_GamepadStateList_FindByIndex(&input->gamepads, 0);
+        }
+        
+        if(STGInput_GamepadState_Button_IsPressedOrRepeated(gamepadPlayerOne, STGINPUT_GAMEPADBUTTONS_START))
+        {
+            printf("Start!\n");
         }
         
         // Approximately 60fps. Doesn't need to be perfect for this test

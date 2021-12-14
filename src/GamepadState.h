@@ -4,6 +4,10 @@
 #include "AxisState.h"
 #include "ButtonState.h"
 
+#define STGINPUT_GAMEPAD_BUTTONS_COUNT 25
+#define STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS 15
+#define STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES 6
+
 #define STGINPUT_GAMEPADSTATELIST_DEFAULT_COUNT 8
 #define STGINPUT_GAMEPADSTATE_ID_INVALID -1
 #define STGINPUT_GAMEPADSTATE_INDEX_INVALID -1
@@ -40,20 +44,20 @@ typedef enum STGInput_GamepadButtons
     STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_UP,
 } STGInput_GamepadButtons;
 
-static STGInput_GamepadButtons STGInput_GamepadButtons_To_SDL_GameControllerButtons[15];
-static SDL_GameControllerButton SDL_GameControllerButtons_To_STGInput_GamepadButtons[15];
-static SDL_GameControllerAxis STGInput_GamepadAxes[6];
+static STGInput_GamepadButtons STGInput_GamepadButtons_To_SDL_GameControllerButtons[STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS];
+static SDL_GameControllerButton SDL_GameControllerButtons_To_STGInput_GamepadButtons[STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS];
+static SDL_GameControllerAxis STGInput_GamepadAxes[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
 
 typedef struct STGInput_GamepadStateProfile
 {
-    STGInput_ButtonState button[15];
+    STGInput_ButtonState button[STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS];
 } STGInput_GamepadStateProfile;
 
 typedef struct STGInput_GamepadState
 {
     SDL_JoystickID id;
-    STGInput_ButtonState button[25];
-    STGInput_AxisState axis[6];
+    STGInput_ButtonState button[STGINPUT_GAMEPAD_BUTTONS_COUNT];
+    STGInput_AxisState axis[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
     SDL_Haptic* haptic;
     SDL_Joystick* joystick;
     SDL_GameController* controller;
@@ -74,6 +78,14 @@ int STGInput_GamepadState_ButtonIndex(SDL_GameControllerButton button);
 
 int STGInput_GamepadState_AxisIndex(SDL_GameControllerAxis axis);
 
+STGInput_ButtonState_Name STGInput_GamepadState_Button_GetState(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button);
+
+char STGInput_GamepadState_Button_IsDown(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button);
+
+char STGInput_GamepadState_Button_IsPressed(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button);
+
+char STGInput_GamepadState_Button_IsPressedOrRepeated(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button);
+
 STGInput_GamepadStateList STGInput_GamepadStateList_Create();
 
 int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_GamepadState gamepad);
@@ -82,10 +94,20 @@ void STGInput_GamepadStateList_Remove(STGInput_GamepadStateList* list, Uint32 id
 
 STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Uint32 id);
 
+STGInput_GamepadState* STGInput_GamepadStateList_FindByIndex(STGInput_GamepadStateList* list, int index);
+
 int STGInput_GamepadStateList_Index_FindById(STGInput_GamepadStateList* list, Uint32 id);
 
 void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event event);
 
 void STGInput_GamepadStateList_Update(STGInput_GamepadStateList* list);
+
+STGInput_ButtonState_Name STGInput_GamepadStateList_Button_GetState(STGInput_GamepadStateList* list, int index, STGInput_GamepadButtons button);
+
+char STGInput_GamepadStateList_Button_IsDown(STGInput_GamepadStateList* list, int index, STGInput_GamepadButtons button);
+
+char STGInput_GamepadStateList_Button_IsPressed(STGInput_GamepadStateList* list, int index, STGInput_GamepadButtons button);
+
+char STGInput_GamepadStateList_Button_IsPressedOrRepeated(STGInput_GamepadStateList* list, int index, STGInput_GamepadButtons button);
 
 STGInput_GamepadStateProfile STGInput_GamepadStateProfile_Create();

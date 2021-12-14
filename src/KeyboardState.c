@@ -77,6 +77,11 @@ char STGInput_KeyboardState_Button_IsPressed(STGInput_KeyboardState* keyboard, S
     return STGInput_ButtonState_Name_IsPressed(STGInput_KeyboardState_Button_GetState(keyboard, key));
 }
 
+char STGInput_KeyboardState_Button_IsPressedOrRepeated(STGInput_KeyboardState* keyboard, SDL_KeyCode key)
+{
+    return STGInput_ButtonState_Name_IsPressedOrRepeated(STGInput_KeyboardState_Button_GetState(keyboard, key));
+}
+
 const SDL_KeyCode STGInput_KeyboardState_Keycodes[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH] = {
     SDLK_UNKNOWN,
     SDLK_RETURN,

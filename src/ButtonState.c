@@ -132,6 +132,23 @@ char STGInput_ButtonState_Name_IsPressed(STGInput_ButtonState_Name buttonState)
     return 0;
 }
 
+char STGInput_ButtonState_Name_IsPressedOrRepeated(STGInput_ButtonState_Name buttonState)
+{
+    switch(buttonState)
+    {
+        case STGINPUT_BUTTONSTATE_NAME_PRESSED:
+        case STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED:
+        case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK:
+        case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK_THEN_RELEASED:
+        case STGINPUT_BUTTONSTATE_NAME_DOWN_REPEAT:
+        {
+            return 1;
+        }
+    }
+    
+    return 0;
+}
+
 char* STGInput_ButtonState_Name_ToString(STGInput_ButtonState_Name buttonState)
 {
     switch(buttonState)
