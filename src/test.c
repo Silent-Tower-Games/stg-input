@@ -3,9 +3,10 @@
 #include "STGInput.h"
 
 // Doing:
-// TODO: Gamepad state profile, wherein you can calibrate axes & remap buttons
+// TODO: Gamepad axes to button values
 
 // Later:
+// TODO: Gamepad state profile, wherein you can calibrate axes & remap buttons
 // TODO: Mouse state
 // TODO: Hide all struct properties & use functions directly with STGInput, or with a state returned from that
 // TODO: Write comments
@@ -48,26 +49,24 @@ int main()
             STGInput_Event(input, event);
         }
         
-        if(STGInput_KeyboardState_Button_IsPressedOrRepeated(&input->keyboard, SDLK_RETURN))
-        {
-            printf("Enter!\n");
-        }
-        
         if(gamepadPlayerOne == NULL)
         {
             printf("Setting...\n");
             gamepadPlayerOne = STGInput_GamepadStateList_FindByIndex(&input->gamepads, 0);
         }
         
-        if(STGInput_GamepadState_Button_IsPressedOrRepeated(gamepadPlayerOne, STGINPUT_GAMEPADBUTTONS_START))
+        if(STGInput_GamepadState_Button_IsDown(gamepadPlayerOne, STGINPUT_GAMEPADBUTTONS_FACE_DOWN))
         {
-            printf("Start!\n");
+            printf(
+                "%1.3f\n",
+                STGInput_GamepadState_AxisPercentage(gamepadPlayerOne, STGINPUT_GAMEPADAXES_LEFT_X)
+            );
         }
         
         // Approximately 60fps. Doesn't need to be perfect for this test
         SDL_Delay(16);
         
-        STGInput_Update(input);
+        STGInput_PostFrame(input);
     }
     
     STGInput_Destroy(input);

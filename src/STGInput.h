@@ -16,6 +16,8 @@ STGInput* STGInput_Create();
 
 void STGInput_Event(STGInput* input, SDL_Event event);
 
-void STGInput_Update(STGInput* input);
+void STGInput_PreFrame(STGInput* input);
+
+void STGInput_PostFrame(STGInput* input);
 
 void STGInput_Destroy(STGInput* input);

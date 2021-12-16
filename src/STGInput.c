@@ -10,6 +10,8 @@ STGInput* STGInput_Create()
 
 void STGInput_Event(STGInput* input, SDL_Event event)
 {
+    // FIXME: NULL check
+    
     switch(event.type)
     {
         case SDL_KEYDOWN:
@@ -29,8 +31,17 @@ void STGInput_Event(STGInput* input, SDL_Event event)
     }
 }
 
-void STGInput_Update(STGInput* input)
+void STGInput_PreFrame(STGInput* input)
 {
+    // FIXME: NULL check
+    
+    //
+}
+
+void STGInput_PostFrame(STGInput* input)
+{
+    // FIXME: NULL check
+    
     STGInput_KeyboardState_Update(&input->keyboard);
     STGInput_GamepadStateList_Update(&input->gamepads);
 }

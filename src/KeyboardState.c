@@ -18,6 +18,8 @@ static int STGInput_KeyboardState_KeyCode_Index(SDL_KeyCode code)
 
 void STGInput_KeyboardState_Event(STGInput_KeyboardState* keyboard, SDL_Event event)
 {
+    // FIXME: NULL check
+    
     int index = STGInput_KeyboardState_KeyCode_Index(event.key.keysym.sym);
     
     if(index < 0 || index >= STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH)
@@ -49,6 +51,8 @@ void STGInput_KeyboardState_Event(STGInput_KeyboardState* keyboard, SDL_Event ev
 
 void STGInput_KeyboardState_Update(STGInput_KeyboardState* keyboard)
 {
+    // FIXME: NULL check
+    
     for(int i = 0; i < STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH; i++)
     {
         keyboard->button[i] = STGInput_ButtonState_Update(keyboard->button[i]);
@@ -57,6 +61,8 @@ void STGInput_KeyboardState_Update(STGInput_KeyboardState* keyboard)
 
 STGInput_ButtonState_Name STGInput_KeyboardState_Button_GetState(STGInput_KeyboardState* keyboard, SDL_KeyCode key)
 {
+    // FIXME: NULL check
+    
     int index = STGInput_KeyboardState_KeyCode_Index(key);
     
     if(index < 0 || index >= STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH)
@@ -69,16 +75,22 @@ STGInput_ButtonState_Name STGInput_KeyboardState_Button_GetState(STGInput_Keyboa
 
 char STGInput_KeyboardState_Button_IsDown(STGInput_KeyboardState* keyboard, SDL_KeyCode key)
 {
+    // FIXME: NULL check
+    
     return STGInput_ButtonState_Name_IsDown(STGInput_KeyboardState_Button_GetState(keyboard, key));
 }
 
 char STGInput_KeyboardState_Button_IsPressed(STGInput_KeyboardState* keyboard, SDL_KeyCode key)
 {
+    // FIXME: NULL check
+    
     return STGInput_ButtonState_Name_IsPressed(STGInput_KeyboardState_Button_GetState(keyboard, key));
 }
 
 char STGInput_KeyboardState_Button_IsPressedOrRepeated(STGInput_KeyboardState* keyboard, SDL_KeyCode key)
 {
+    // FIXME: NULL check
+    
     return STGInput_ButtonState_Name_IsPressedOrRepeated(STGInput_KeyboardState_Button_GetState(keyboard, key));
 }
 

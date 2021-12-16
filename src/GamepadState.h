@@ -44,9 +44,20 @@ typedef enum STGInput_GamepadButtons
     STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_UP,
 } STGInput_GamepadButtons;
 
+typedef enum STGInput_GamepadAxes
+{
+    STGINPUT_GAMEPADAXES_LEFT_X,
+    STGINPUT_GAMEPADAXES_LEFT_Y,
+    STGINPUT_GAMEPADAXES_RIGHT_X,
+    STGINPUT_GAMEPADAXES_RIGHT_Y,
+    STGINPUT_GAMEPADAXES_TRIGGER_LEFT,
+    STGINPUT_GAMEPADAXES_TRIGGER_RIGHT,
+} STGInput_GamepadAxes;
+
 static STGInput_GamepadButtons STGInput_GamepadButtons_To_SDL_GameControllerButtons[STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS];
 static SDL_GameControllerButton SDL_GameControllerButtons_To_STGInput_GamepadButtons[STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS];
-static SDL_GameControllerAxis STGInput_GamepadAxes[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
+static STGInput_GamepadAxes STGInput_GamepadAxesSTGInput[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
+static SDL_GameControllerAxis STGInput_GamepadAxesSDL[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
 
 typedef struct STGInput_GamepadStateProfile
 {
@@ -74,9 +85,15 @@ STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which);
 
 void STGInput_GamepadState_Destroy(STGInput_GamepadState* gamepad);
 
-int STGInput_GamepadState_ButtonIndex(SDL_GameControllerButton button);
+int STGInput_GamepadState_AxisSDLIndex(SDL_GameControllerAxis axis);
 
-int STGInput_GamepadState_AxisIndex(SDL_GameControllerAxis axis);
+int STGInput_GamepadState_AxisIndex(STGInput_GamepadButtons axis);
+
+float STGInput_GamepadState_AxisPercentage(STGInput_GamepadState* gamepad, STGInput_GamepadButtons axis);
+
+Sint16 STGInput_GamepadState_AxisValue(STGInput_GamepadState* gamepad, STGInput_GamepadButtons axis);
+
+int STGInput_GamepadState_ButtonIndex(SDL_GameControllerButton button);
 
 STGInput_ButtonState_Name STGInput_GamepadState_Button_GetState(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button);
 
