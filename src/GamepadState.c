@@ -58,7 +58,7 @@ int STGInput_GamepadState_AxisIndex(STGInput_GamepadButtons axis)
 {
     for(int i = 0; i < STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES; i++)
     {
-        if(STGInput_GamepadAxesSTGInput[i] != axis)
+        if(STGInput_GamepadAxes_List[i] != axis)
         {
             continue;
         }
@@ -74,8 +74,6 @@ float STGInput_GamepadState_AxisPercentage(STGInput_GamepadState* gamepad, STGIn
     // FIXME: NULL check
     
     int index = STGInput_GamepadState_AxisIndex(axis);
-    
-    printf("i %d\n", index);
     
     if(index < 0 || index >= STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES)
     {
@@ -99,11 +97,26 @@ Sint16 STGInput_GamepadState_AxisValue(STGInput_GamepadState* gamepad, STGInput_
     return gamepad->axis[index].value;
 }
 
-int STGInput_GamepadState_ButtonIndex(SDL_GameControllerButton button)
+int STGInput_GamepadState_ButtonIndex(STGInput_GamepadButtons button)
+{
+    for(int i = 0; i < STGINPUT_GAMEPAD_BUTTONS_COUNT; i++)
+    {
+        if(STGInput_GamepadButtons_List[i] != button)
+        {
+            continue;
+        }
+        
+        return i;
+    }
+    
+    return -1;
+}
+
+int STGInput_GamepadState_ButtonIndexSDL(SDL_GameControllerButton button)
 {
     for(int i = 0; i < STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS; i++)
     {
-        if(SDL_GameControllerButtons_To_STGInput_GamepadButtons[i] != button)
+        if(SDL_GameControllerButtons_To_STGInput_GamepadButtons_List[i] != button)
         {
             continue;
         }
@@ -116,8 +129,6 @@ int STGInput_GamepadState_ButtonIndex(SDL_GameControllerButton button)
 
 STGInput_ButtonState_Name STGInput_GamepadState_Button_GetState(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button)
 {
-    // FIXME: NULL check
-    
     if(gamepad == NULL)
     {
         return STGINPUT_BUTTONSTATE_NAME_UP;
@@ -318,8 +329,8 @@ void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event 
                 break;
             }
             
-            int buttonIndex = STGInput_GamepadState_ButtonIndex(event.cbutton.button);
-                
+            int buttonIndex = STGInput_GamepadState_ButtonIndexSDL(event.cbutton.button);
+            
             char isDown = event.type == SDL_CONTROLLERBUTTONDOWN ?
                 STGINPUT_BUTTONSTATE_EVENT_DOWN
             :
@@ -346,6 +357,49 @@ void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event 
             
             gamepad->axis[axisIndex] = STGInput_AxisState_Update(gamepad->axis[axisIndex], event.caxis.value);
         } break;
+    }
+}
+
+void STGInput_GamepadStateList_SetAxesButtons(STGInput_GamepadStateList* list)
+{
+    // FIXME: NULL check
+    
+    // TODO: This is a temporary & waseteful solution
+    STGInput_GamepadAxes_Profile axes[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES_BUTTONS] = {
+        { STGINPUT_GAMEPADAXES_TRIGGER_LEFT, STGINPUT_GAMEPADBUTTONS_TRIGGER_LEFT, 0.5f, 1.0f, },
+        { STGINPUT_GAMEPADAXES_TRIGGER_RIGHT, STGINPUT_GAMEPADBUTTONS_TRIGGER_RIGHT, 0.5f, 1.0f, },
+        { STGINPUT_GAMEPADAXES_STICK_LEFT_X, STGINPUT_GAMEPADBUTTONS_STICK_LEFT_LEFT, -1.0f, -0.5f, },
+        { STGINPUT_GAMEPADAXES_STICK_LEFT_X, STGINPUT_GAMEPADBUTTONS_STICK_LEFT_RIGHT, 0.5f, 1.0f, },
+        { STGINPUT_GAMEPADAXES_STICK_LEFT_Y, STGINPUT_GAMEPADBUTTONS_STICK_LEFT_UP, -1.0f, -0.5f, },
+        { STGINPUT_GAMEPADAXES_STICK_LEFT_Y, STGINPUT_GAMEPADBUTTONS_STICK_LEFT_DOWN, 0.5f, 1.0f, },
+        { STGINPUT_GAMEPADAXES_STICK_RIGHT_X, STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_LEFT, -1.0f, -0.5f, },
+        { STGINPUT_GAMEPADAXES_STICK_RIGHT_X, STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_RIGHT, 0.5f, 1.0f, },
+        { STGINPUT_GAMEPADAXES_STICK_RIGHT_Y, STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_UP, -1.0f, -0.5f, },
+        { STGINPUT_GAMEPADAXES_STICK_RIGHT_Y, STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_DOWN, 0.5f, 1.0f, },
+    };
+    
+    for(int i = 0; i <= list->highest; i++)
+    {
+        for(int j = 0; j < STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES_BUTTONS; j++)
+        {
+            int index = STGInput_GamepadState_ButtonIndex(axes[j].button);
+            float value = STGInput_GamepadState_AxisPercentage(&list->states[i], axes[j].axis);
+            
+            if(index < 0 || index >= STGINPUT_GAMEPAD_BUTTONS_COUNT)
+            {
+                continue;
+            }
+            
+            list->states[i].button[index] = STGInput_ButtonState_Event(
+                list->states[i].button[index],
+                (value >= axes[j].rangeBegin && value <= axes[j].rangeEnd) ?
+                    STGINPUT_BUTTONSTATE_EVENT_DOWN
+                :
+                    STGINPUT_BUTTONSTATE_EVENT_UP
+                ,
+                STGINPUT_BUTTONSTATE_EVENT_NOTREPEAT
+            );
+        }
     }
 }
 
@@ -405,12 +459,12 @@ STGInput_GamepadStateProfile STGInput_GamepadStateProfile_Create()
     STGInput_GamepadStateProfile profile;
     memcpy(
         &profile.button,
-        &SDL_GameControllerButtons_To_STGInput_GamepadButtons,
-        sizeof(SDL_GameControllerButtons_To_STGInput_GamepadButtons)
+        &SDL_GameControllerButtons_To_STGInput_GamepadButtons_List,
+        sizeof(SDL_GameControllerButtons_To_STGInput_GamepadButtons_List)
     );
 }
 
-static STGInput_GamepadButtons STGInput_GamepadButtons_To_SDL_GameControllerButtons[STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS] = {
+static STGInput_GamepadButtons STGInput_GamepadButtons_List[STGINPUT_GAMEPAD_BUTTONS_COUNT] = {
     STGINPUT_GAMEPADBUTTONS_FACE_DOWN,
     STGINPUT_GAMEPADBUTTONS_FACE_RIGHT,
     STGINPUT_GAMEPADBUTTONS_FACE_LEFT,
@@ -426,9 +480,20 @@ static STGInput_GamepadButtons STGInput_GamepadButtons_To_SDL_GameControllerButt
     STGINPUT_GAMEPADBUTTONS_DPAD_DOWN,
     STGINPUT_GAMEPADBUTTONS_DPAD_LEFT,
     STGINPUT_GAMEPADBUTTONS_DPAD_RIGHT,
+    // Virtual axes buttons
+    STGINPUT_GAMEPADBUTTONS_TRIGGER_LEFT,
+    STGINPUT_GAMEPADBUTTONS_TRIGGER_RIGHT,
+    STGINPUT_GAMEPADBUTTONS_STICK_LEFT_LEFT,
+    STGINPUT_GAMEPADBUTTONS_STICK_LEFT_RIGHT,
+    STGINPUT_GAMEPADBUTTONS_STICK_LEFT_DOWN,
+    STGINPUT_GAMEPADBUTTONS_STICK_LEFT_UP,
+    STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_LEFT,
+    STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_RIGHT,
+    STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_DOWN,
+    STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_UP,
 };
 
-static SDL_GameControllerButton SDL_GameControllerButtons_To_STGInput_GamepadButtons[STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS] = {
+static SDL_GameControllerButton SDL_GameControllerButtons_To_STGInput_GamepadButtons_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS] = {
     SDL_CONTROLLER_BUTTON_A,
     SDL_CONTROLLER_BUTTON_B,
     SDL_CONTROLLER_BUTTON_X,
@@ -455,11 +520,11 @@ static SDL_GameControllerAxis STGInput_GamepadAxesSDL[STGINPUT_GAMEPAD_BUTTONS_C
     SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
 };
 
-static STGInput_GamepadAxes STGInput_GamepadAxesSTGInput[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES] = {
-    STGINPUT_GAMEPADAXES_LEFT_X,
-    STGINPUT_GAMEPADAXES_LEFT_Y,
-    STGINPUT_GAMEPADAXES_RIGHT_X,
-    STGINPUT_GAMEPADAXES_RIGHT_Y,
+static STGInput_GamepadAxes STGInput_GamepadAxes_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES] = {
+    STGINPUT_GAMEPADAXES_STICK_LEFT_X,
+    STGINPUT_GAMEPADAXES_STICK_LEFT_Y,
+    STGINPUT_GAMEPADAXES_STICK_RIGHT_X,
+    STGINPUT_GAMEPADAXES_STICK_RIGHT_Y,
     STGINPUT_GAMEPADAXES_TRIGGER_LEFT,
     STGINPUT_GAMEPADAXES_TRIGGER_RIGHT,
 };

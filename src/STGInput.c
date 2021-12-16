@@ -35,7 +35,7 @@ void STGInput_PreFrame(STGInput* input)
 {
     // FIXME: NULL check
     
-    //
+    STGInput_GamepadStateList_SetAxesButtons(&input->gamepads);
 }
 
 void STGInput_PostFrame(STGInput* input)
