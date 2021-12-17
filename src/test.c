@@ -53,7 +53,9 @@ int main()
         if(gamepadPlayerOne == NULL)
         {
             printf("Setting...\n");
-            gamepadPlayerOne = STGInput_GamepadStateList_FindByIndex(&input->gamepads, 0);
+            gamepadPlayerOne = STGInput_GamepadStateList_FindByIndex(input->gamepads, 0);
+            
+            printf("Active? %d\n", STGInput_GamepadState_IsActive(gamepadPlayerOne));
         }
         
         STGInput_GamepadAxis_Profile axes[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES_BUTTONS] = {
@@ -85,9 +87,6 @@ int main()
         {
             printf("Enter\n");
         }
-        
-        STGInput_MousePosition pos = STGInput_MouseState_Position(input->mouse);
-        printf("%dx%d\n", pos.X, pos.Y);
         
         // Approximately 60fps. Doesn't need to be perfect for this test
         SDL_Delay(16);

@@ -5,6 +5,7 @@ STGInput* STGInput_Create()
 {
     STGInput* input = calloc(1, sizeof(STGInput));
     
+    input->gamepads = STGInput_GamepadStateList_Create();
     input->keyboard = STGInput_KeyboardState_Create();
     input->mouse = STGInput_MouseState_Create();
     
@@ -32,7 +33,7 @@ void STGInput_Event(STGInput* input, SDL_Event event)
         case SDL_CONTROLLERBUTTONUP:
         case SDL_CONTROLLERAXISMOTION:
         {
-            STGInput_GamepadStateList_Event(&input->gamepads, event);
+            STGInput_GamepadStateList_Event(input->gamepads, event);
         } break;
     }
 }
@@ -44,7 +45,7 @@ void STGInput_PreFrame(STGInput* input)
         return;
     }
     
-    STGInput_GamepadStateList_SetAxesButtons(&input->gamepads);
+    STGInput_GamepadStateList_SetAxesButtons(input->gamepads);
     STGInput_MouseState_Poll(input->mouse);
 }
 
@@ -56,7 +57,7 @@ void STGInput_PostFrame(STGInput* input)
     }
     
     STGInput_KeyboardState_Update(input->keyboard);
-    STGInput_GamepadStateList_Update(&input->gamepads);
+    STGInput_GamepadStateList_Update(input->gamepads);
     STGInput_MouseState_Update(input->mouse);
 }
 

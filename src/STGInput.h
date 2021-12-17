@@ -9,7 +9,7 @@
 typedef struct STGInput
 {
     STGInput_KeyboardState* keyboard;
-    STGInput_GamepadStateList gamepads;
+    STGInput_GamepadStateList* gamepads;
     STGInput_MouseState* mouse;
 } STGInput;
 

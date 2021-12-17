@@ -2,6 +2,23 @@
 #include <math.h>
 #include "GamepadState.h"
 
+typedef struct STGInput_GamepadState
+{
+    SDL_JoystickID id;
+    STGInput_ButtonState button[STGINPUT_GAMEPAD_BUTTONS_COUNT];
+    STGInput_AxisState axis[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
+    SDL_Haptic* haptic;
+    SDL_Joystick* joystick;
+    SDL_GameController* controller;
+} STGInput_GamepadState;
+
+typedef struct STGInput_GamepadStateList
+{
+    int allocated;
+    int highest;
+    STGInput_GamepadState* states;
+} STGInput_GamepadStateList;
+
 STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which)
 {
     STGInput_GamepadState gamepad;
@@ -20,7 +37,7 @@ STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which)
         ||
         gamepad.controller == NULL
         ||
-        gamepad.id <= STGINPUT_GAMEPADSTATE_ID_INVALID
+        !STGInput_GamepadState_IsActive(&gamepad)
     )
     {
         STGInput_GamepadState_Destroy(&gamepad);
@@ -40,6 +57,11 @@ void STGInput_GamepadState_Destroy(STGInput_GamepadState* gamepad)
     SDL_GameControllerClose(gamepad->controller);
     SDL_JoystickClose(gamepad->joystick);
     gamepad->id = STGINPUT_GAMEPADSTATE_ID_INVALID;
+}
+
+char STGInput_GamepadState_IsActive(STGInput_GamepadState* gamepad)
+{
+    return gamepad->id > STGINPUT_GAMEPADSTATE_ID_INVALID;
 }
 
 int STGInput_GamepadState_AxisSDLIndex(SDL_GameControllerAxis axis)
@@ -211,12 +233,11 @@ static void STGInput_GamepadStateList_Expand(STGInput_GamepadStateList* list)
     }
 }
 
-STGInput_GamepadStateList STGInput_GamepadStateList_Create()
+STGInput_GamepadStateList* STGInput_GamepadStateList_Create()
 {
-    STGInput_GamepadStateList list;
-    memset(&list, 0, sizeof(list));
+    STGInput_GamepadStateList* list = calloc(1, sizeof(STGInput_GamepadStateList));
     
-    STGInput_GamepadStateList_Expand(&list);
+    STGInput_GamepadStateList_Expand(list);
     
     return list;
 }
@@ -228,7 +249,7 @@ int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_Game
         return 0;
     }
     
-    if(gamepad.id <= STGINPUT_GAMEPADSTATE_ID_INVALID)
+    if(!STGInput_GamepadState_IsActive(&gamepad))
     {
         return STGINPUT_GAMEPADSTATE_INDEX_INVALID;
     }
@@ -283,7 +304,7 @@ void STGInput_GamepadStateList_Remove(STGInput_GamepadStateList* list, Uint32 id
         // FIXME: This should start with highest-1 and count down to 0
         for(int i = 0; i < list->highest; i++)
         {
-            if(list->states[i].id <= STGINPUT_GAMEPADSTATE_ID_INVALID)
+            if(!STGInput_GamepadState_IsActive(&list->states[i]))
             {
                 continue;
             }
@@ -359,6 +380,8 @@ void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event 
         case SDL_CONTROLLERDEVICEADDED:
         {
             STGInput_GamepadState gamepad = STGInput_GamepadState_Create(event.cdevice.which);
+            
+            printf("Added #%d\n", gamepad.id);
             
             const int index = STGInput_GamepadStateList_Add(list, gamepad);
         } break;
@@ -464,7 +487,7 @@ void STGInput_GamepadStateList_Update(STGInput_GamepadStateList* list)
     
     for(int i = 0; i <= list->highest; i++)
     {
-        if(list->states[i].id <= STGINPUT_GAMEPADSTATE_ID_INVALID)
+        if(!STGInput_GamepadState_IsActive(&list->states[i]))
         {
             continue;
         }
@@ -483,7 +506,7 @@ STGInput_ButtonState_Name STGInput_GamepadStateList_Button_GetState(STGInput_Gam
         return STGINPUT_BUTTONSTATE_NAME_UP;
     }
     
-    if(index < 0 || index >= list->highest || list->states[index].id <= STGINPUT_GAMEPADSTATE_ID_INVALID)
+    if(index < 0 || index >= list->highest || !STGInput_GamepadState_IsActive(&list->states[index]))
     {
         return STGINPUT_BUTTONSTATE_NAME_UP;
     }
