@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include "STGInput/STGInput.h"
+#define STGINPUT_CONVENIENCE
+#include "STGInput/Convenience.h"
 
 // TODO: Convenience functions, optional
 // TODO: README
@@ -11,14 +13,11 @@ void events();
 STGInput_GamepadState* gamepadPlayerOne = NULL;
 SDL_Window* window;
 SDL_Event event;
-STGInput* input;
 int quit = 0;
 
 int main()
 {
     init();
-    
-    input = STGInput_Create();
     
     printf("Hello, World!\n");
     
@@ -26,65 +25,26 @@ int main()
     {
         events();
         
-        STGInput_PreFrame(input);
+        inputPreframe();
         
         // Gamepad tests
-        if(gamepadPlayerOne == NULL)
+        if(gamepad(0, Pressed, FACE_DOWN))
         {
-            gamepadPlayerOne = STGInput_GamepadStateList_FindByIndex(input->gamepads, 0);
+            printf("A Button Pressed\n");
         }
         
-        if(STGInput_GamepadState_Button_IsPressed(gamepadPlayerOne, STGINPUT_GAMEPADBUTTONS_FACE_DOWN))
-        {
-            printf("A Button Down\n");
-        }
-        
-        if(STGInput_GamepadState_Button_IsPressed(gamepadPlayerOne, STGINPUT_GAMEPADBUTTONS_BACK))
-        {
-            printf("Back Button Pressed; Quitting\n");
-            
-            break;
-        }
-        
-        if(STGInput_GamepadState_Button_IsPressed(gamepadPlayerOne, STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_RIGHT))
-        {
-            printf("Right Stick Held Right: %1.3f\n", STGInput_GamepadState_AxisPercentage(gamepadPlayerOne, STGINPUT_GAMEPADAXES_STICK_RIGHT_X));
-        }
-        
-        // Keyboard tests
-        if(STGInput_KeyboardState_Button_IsPressedOrRepeated(input->keyboard, STGINPUT_KEYBOARDKEYS_RETURN))
-        {
-            printf("Enter Pressed Or Repeated\n");
-        }
-        
-        if(STGInput_KeyboardState_Button_IsPressed(input->keyboard, STGINPUT_KEYBOARDKEYS_LSHIFT))
-        {
-            printf("Left Shift Pressed\n");
-        }
-        
-        if(STGInput_KeyboardState_Button_IsDown(input->keyboard, STGINPUT_KEYBOARDKEYS_a))
+        if(keyboard(Down, a))
         {
             printf("A Key Down\n");
-        }
-        
-        if(STGInput_KeyboardState_Button_IsReleased(input->keyboard, STGINPUT_KEYBOARDKEYS_b))
-        {
-            printf("B Key Released\n");
-        }
-        
-        // Mouse tests
-        if(STGInput_MouseState_Button_IsPressed(input->mouse, STGINPUT_MOUSEBUTTONS_LEFTCLICK))
-        {
-            printf("Left Click Pressed\n");
         }
         
         // Approximately 60fps. Doesn't need to be perfect for this test
         SDL_Delay(16);
         
-        STGInput_PostFrame(input);
+        inputPostframe();
     }
     
-    STGInput_Destroy(input);
+    inputDestroy();
     
     return 0;
 }
@@ -117,6 +77,6 @@ void events()
             } break;
         }
         
-        STGInput_Event(input, event);
+        inputEvent(event);
     }
 }
