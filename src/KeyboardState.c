@@ -6,6 +6,8 @@ typedef struct STGInput_KeyboardState
     STGInput_ButtonState button[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH];
 } STGInput_KeyboardState;
 
+static const SDL_KeyCode STGInput_KeyboardState_Keycodes[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH];
+
 STGInput_KeyboardState* STGInput_KeyboardState_Create()
 {
     STGInput_KeyboardState* keyboard = calloc(1, sizeof(STGInput_KeyboardState));
@@ -134,7 +136,7 @@ char STGInput_KeyboardState_Button_IsReleased(STGInput_KeyboardState* keyboard, 
     return STGInput_ButtonState_Name_IsReleased(STGInput_KeyboardState_Button_GetState(keyboard, key));
 }
 
-const SDL_KeyCode STGInput_KeyboardState_Keycodes[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH] = {
+static const SDL_KeyCode STGInput_KeyboardState_Keycodes[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH] = {
     SDLK_UNKNOWN,
     SDLK_RETURN,
     SDLK_ESCAPE,

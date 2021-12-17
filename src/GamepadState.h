@@ -13,10 +13,12 @@
 #define STGINPUT_GAMEPADSTATE_ID_INVALID -1
 #define STGINPUT_GAMEPADSTATE_INDEX_INVALID -1
 
+/**
+ * List of gamepad buttons.
+ */
 typedef enum STGInput_GamepadButtons
 {
     // SDL_CONTROLER_BUTTON copies
-    // TODO: Rename ABXY to up down left right?
     STGINPUT_GAMEPADBUTTONS_FACE_DOWN,
     STGINPUT_GAMEPADBUTTONS_FACE_RIGHT,
     STGINPUT_GAMEPADBUTTONS_FACE_LEFT,
@@ -45,6 +47,9 @@ typedef enum STGInput_GamepadButtons
     STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_UP,
 } STGInput_GamepadButtons;
 
+/**
+ * List of gamepad axes.
+ */
 typedef enum STGInput_GamepadAxes
 {
     STGINPUT_GAMEPADAXES_STICK_LEFT_X,
@@ -55,11 +60,9 @@ typedef enum STGInput_GamepadAxes
     STGINPUT_GAMEPADAXES_TRIGGER_RIGHT,
 } STGInput_GamepadAxes;
 
-static STGInput_GamepadAxes STGInput_GamepadAxes_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
-static SDL_GameControllerButton SDL_GameControllerButtons_To_STGInput_GamepadButtons_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS];
-static SDL_GameControllerAxis STGInput_GamepadAxesSDL[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
-static STGInput_GamepadButtons STGInput_GamepadButtons_List[STGINPUT_GAMEPAD_BUTTONS_COUNT];
-
+/**
+ * Gamepad axis mappable options state.
+ */
 typedef struct STGInput_GamepadAxis_Profile
 {
     STGInput_GamepadAxes axis;
@@ -68,67 +71,155 @@ typedef struct STGInput_GamepadAxis_Profile
     float rangeEnd;
 } STGInput_GamepadAxis_Profile;
 
+// TODO: Gamepad state mapping
+/**
+ * Gamepad mappable options profile.
+ */
 typedef struct STGInput_GamepadStateProfile
 {
     STGInput_ButtonState button[STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS];
 } STGInput_GamepadStateProfile;
 
+/**
+ * Gamepad state object.
+ */
 typedef struct STGInput_GamepadState STGInput_GamepadState;
 
+/**
+ * Gamepad state vector container.
+ */
 typedef struct STGInput_GamepadStateList STGInput_GamepadStateList;
 
+/**
+ * Create a new gamepad state object.
+ *
+ * \param which ID of the gamepad device
+ * \return new gamepad state object
+ */
 STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which);
 
+/**
+ * Destroy all gamepad state heap memory.
+ *
+ * \param gamepad gamepad state object
+ */
 void STGInput_GamepadState_Destroy(STGInput_GamepadState* gamepad);
 
+/**
+ * Get whether or not a given gamepad state represents an active gamepad.
+ *
+ * \param gamepad gamepad state object
+ * \return 1 for active, 0 otherwise
+ */
 char STGInput_GamepadState_IsActive(STGInput_GamepadState* gamepad);
 
-int STGInput_GamepadState_AxisSDLIndex(SDL_GameControllerAxis axis);
-
-int STGInput_GamepadState_AxisIndex(STGInput_GamepadButtons axis);
-
+/**
+ * Get the float value of a given gamepad axis.
+ *
+ * \param gamepad gamepad state object
+ * \param axis button enum value for axis
+ * \return between -1.0f and 1.0f
+ */
 float STGInput_GamepadState_AxisPercentage(STGInput_GamepadState* gamepad, STGInput_GamepadButtons axis);
 
+/**
+ * Get the signt 16-bit integer value of a given gamepad axis.
+ *
+ * \param gamepad gamepad state object
+ * \param axis button enum value for axis
+ * \return between -32768 and 32767
+ */
 Sint16 STGInput_GamepadState_AxisValue(STGInput_GamepadState* gamepad, STGInput_GamepadButtons axis);
 
-int STGInput_GamepadState_ButtonIndex(STGInput_GamepadButtons button);
-
-int STGInput_GamepadState_ButtonIndexSDL(SDL_GameControllerButton button);
-
+/**
+ * Get the state object of a given gamepad button.
+ *
+ * \param gamepad gamepad state object
+ * \param button button enum value
+ * \return button state object
+ */
 STGInput_ButtonState_Name STGInput_GamepadState_Button_GetState(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button);
 
+/**
+ * Get whether the button is down or not.
+ * Returns true for PRESSED, DOWN, etc.
+ *
+ * \param gamepad gamepad state object
+ * \param button button enum value
+ * \return 1 for down, 0 for otherwise
+ */
 char STGInput_GamepadState_Button_IsDown(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button);
 
+/**
+ * Get whether or not the button is newly pressed this frame.
+ *
+ * \param gamepad gamepad state object
+ * \param button button enum value
+ * \return 1 for pressed, 0 otherwise
+ */
 char STGInput_GamepadState_Button_IsPressed(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button);
 
+/**
+ * Get whether or not the button is pressed or repeat-pressed.
+ * Repeat-pressed is never true for a gamepad.
+ *
+ * \param gamepad gamepad state object
+ * \param button button enum value
+ * \return 1 for pressed / repeat-pressed, 0 otherwise
+ */
 char STGInput_GamepadState_Button_IsPressedOrRepeated(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button);
 
+/**
+ * Get whether or not the button is newly released this frame.
+ *
+ * \param gamepad gamepad state object
+ * \param button button enum value
+ * \return 1 for released, 0 otherwise
+ */
 char STGInput_GamepadState_Button_IsReleased(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button);
 
+/**
+ * Create a new gamepad state vector container. Pre-allocateds 8 slots, will allocate more if needed.
+ *
+ * \return new gamepad state vector container
+ */
 STGInput_GamepadStateList* STGInput_GamepadStateList_Create();
 
-int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_GamepadState gamepad);
-
-void STGInput_GamepadStateList_Remove(STGInput_GamepadStateList* list, Uint32 id);
-
-STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Uint32 id);
-
+/**
+ * Get a gamepad by its player index. E.g. Player One is 0, Player Two is 1, etc.
+ *
+ * \param list gamepad state vector container
+ * \param index player index
+ * \return gamepad state, if exists; NULL otherwise
+ */
 STGInput_GamepadState* STGInput_GamepadStateList_FindByIndex(STGInput_GamepadStateList* list, int index);
 
-int STGInput_GamepadStateList_Index_FindById(STGInput_GamepadStateList* list, Uint32 id);
-
+/**
+ * Act on a given SDL Event.
+ *
+ * \param list gamepad state vector container
+ * \param event SDL event
+ */
 void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event event);
 
+/**
+ * Update button state objects for all gamepad axes. Should be called once per frame, after acting on SDL events.
+ *
+ * \param list gamepad state vector container
+ */
 void STGInput_GamepadStateList_SetAxesButtons(STGInput_GamepadStateList* list);
 
+/**
+ * Update button states for all gamepad axes.
+ * Will change PRESSED to DOWN, RELEASED to UP, etc.
+ *
+ * \param list gamepad state vector container
+ */
 void STGInput_GamepadStateList_Update(STGInput_GamepadStateList* list);
 
-STGInput_ButtonState_Name STGInput_GamepadStateList_Button_GetState(STGInput_GamepadStateList* list, int index, STGInput_GamepadButtons button);
-
-char STGInput_GamepadStateList_Button_IsDown(STGInput_GamepadStateList* list, int index, STGInput_GamepadButtons button);
-
-char STGInput_GamepadStateList_Button_IsPressed(STGInput_GamepadStateList* list, int index, STGInput_GamepadButtons button);
-
-char STGInput_GamepadStateList_Button_IsPressedOrRepeated(STGInput_GamepadStateList* list, int index, STGInput_GamepadButtons button);
-
+/**
+ * Create a new default gamepad state profile.
+ *
+ * \return gamepad state profile
+ */
 STGInput_GamepadStateProfile STGInput_GamepadStateProfile_Create();

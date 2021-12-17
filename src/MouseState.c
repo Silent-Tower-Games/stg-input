@@ -7,6 +7,10 @@ typedef struct STGInput_MouseState
     STGInput_ButtonState button[STGINPUT_MOUSESTATE_BUTTONS_COUNT];
 } STGInput_MouseState;
 
+static const STGInput_MouseButtons STGInput_MouseButtons_List[STGINPUT_MOUSESTATE_BUTTONS_COUNT];
+
+static int STGInput_MouseState_ButtonIndex(STGInput_MouseButtons button);
+
 STGInput_MouseState* STGInput_MouseState_Create()
 {
     STGInput_MouseState* mouse = calloc(1, sizeof(STGInput_MouseState));
@@ -76,7 +80,7 @@ void STGInput_MouseState_Update(STGInput_MouseState* mouse)
     }
 }
 
-int STGInput_MouseState_ButtonIndex(STGInput_MouseButtons button)
+static int STGInput_MouseState_ButtonIndex(STGInput_MouseButtons button)
 {
     for(int i = 0; i < STGINPUT_MOUSESTATE_BUTTONS_COUNT; i++)
     {
@@ -158,7 +162,7 @@ STGInput_MousePosition STGInput_MouseState_Position(STGInput_MouseState* mouse)
     return mouse->position;
 }
 
-STGInput_MouseButtons STGInput_MouseButtons_List[STGINPUT_MOUSESTATE_BUTTONS_COUNT] = {
+static const STGInput_MouseButtons STGInput_MouseButtons_List[STGINPUT_MOUSESTATE_BUTTONS_COUNT] = {
     STGINPUT_MOUSEBUTTONS_LEFTCLICK,
     STGINPUT_MOUSEBUTTONS_MIDDLECLICK,
     STGINPUT_MOUSEBUTTONS_RIGHTCLICK,

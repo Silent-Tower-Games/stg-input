@@ -3,11 +3,10 @@
 #include "STGInput.h"
 
 // Doing:
-// TODO: Hide all struct properties & use functions directly with STGInput, or with a state returned from that
+// TODO: Write comments
 
 // Later:
 // TODO: Gamepad state profile, wherein you can calibrate axes & remap buttons
-// TODO: Write comments
 // TODO: Unit tests
 // TODO: Fix names. They've gotten out of hand
 
