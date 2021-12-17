@@ -6,10 +6,9 @@
 
 extern const SDL_KeyCode STGInput_KeyboardState_Keycodes[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH];
 
-typedef struct STGInput_KeyboardState
-{
-    STGInput_ButtonState button[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH];
-} STGInput_KeyboardState;
+typedef struct STGInput_KeyboardState STGInput_KeyboardState;
+
+STGInput_KeyboardState* STGInput_KeyboardState_Create();
 
 void STGInput_KeyboardState_Event(STGInput_KeyboardState* keyboard, SDL_Event event);
 

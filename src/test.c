@@ -81,6 +81,11 @@ int main()
             }
         }
         
+        if(STGInput_KeyboardState_Button_IsPressedOrRepeated(input->keyboard, SDLK_RETURN))
+        {
+            printf("Enter\n");
+        }
+        
         STGInput_MousePosition pos = STGInput_MouseState_Position(input->mouse);
         printf("%dx%d\n", pos.X, pos.Y);
         

@@ -1,6 +1,18 @@
 #include <SDL2/SDL.h>
 #include "KeyboardState.h"
 
+typedef struct STGInput_KeyboardState
+{
+    STGInput_ButtonState button[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH];
+} STGInput_KeyboardState;
+
+STGInput_KeyboardState* STGInput_KeyboardState_Create()
+{
+    STGInput_KeyboardState* keyboard = calloc(1, sizeof(STGInput_KeyboardState));
+    
+    return keyboard;
+}
+
 static int STGInput_KeyboardState_KeyCode_Index(SDL_KeyCode code)
 {
     // TODO: Is there a faster way to do this? This is O(n)

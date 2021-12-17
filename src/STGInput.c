@@ -5,6 +5,7 @@ STGInput* STGInput_Create()
 {
     STGInput* input = calloc(1, sizeof(STGInput));
     
+    input->keyboard = STGInput_KeyboardState_Create();
     input->mouse = STGInput_MouseState_Create();
     
     return input;
@@ -22,7 +23,7 @@ void STGInput_Event(STGInput* input, SDL_Event event)
         case SDL_KEYDOWN:
         case SDL_KEYUP:
         {
-            STGInput_KeyboardState_Event(&input->keyboard, event);
+            STGInput_KeyboardState_Event(input->keyboard, event);
         } break;
         
         case SDL_CONTROLLERDEVICEADDED:
@@ -54,7 +55,7 @@ void STGInput_PostFrame(STGInput* input)
         return;
     }
     
-    STGInput_KeyboardState_Update(&input->keyboard);
+    STGInput_KeyboardState_Update(input->keyboard);
     STGInput_GamepadStateList_Update(&input->gamepads);
     STGInput_MouseState_Update(input->mouse);
 }
