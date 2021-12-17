@@ -3,11 +3,10 @@
 #include "STGInput.h"
 
 // Doing:
-// TODO: Mouse state
+// TODO: Hide all struct properties & use functions directly with STGInput, or with a state returned from that
 
 // Later:
 // TODO: Gamepad state profile, wherein you can calibrate axes & remap buttons
-// TODO: Hide all struct properties & use functions directly with STGInput, or with a state returned from that
 // TODO: Write comments
 // TODO: Unit tests
 // TODO: Fix names. They've gotten out of hand
@@ -82,20 +81,8 @@ int main()
             }
         }
         
-        if(STGInput_GamepadState_Button_IsReleased(gamepadPlayerOne, STGINPUT_GAMEPADBUTTONS_FACE_DOWN))
-        {
-            printf("A released!\n");
-        }
-        
-        if(STGInput_MouseState_Button_IsReleased(&input->mouse, STGINPUT_MOUSEBUTTONS_LEFTCLICK))
-        {
-            printf("Left click released!\n");
-        }
-        
-        if(STGInput_KeyboardState_Button_IsReleased(&input->keyboard, SDLK_RETURN))
-        {
-            printf("Enter released!\n");
-        }
+        STGInput_MousePosition pos = STGInput_MouseState_Position(input->mouse);
+        printf("%dx%d\n", pos.X, pos.Y);
         
         // Approximately 60fps. Doesn't need to be perfect for this test
         SDL_Delay(16);

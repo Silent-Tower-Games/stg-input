@@ -5,6 +5,8 @@ STGInput* STGInput_Create()
 {
     STGInput* input = calloc(1, sizeof(STGInput));
     
+    input->mouse = STGInput_MouseState_Create();
+    
     return input;
 }
 
@@ -42,7 +44,7 @@ void STGInput_PreFrame(STGInput* input)
     }
     
     STGInput_GamepadStateList_SetAxesButtons(&input->gamepads);
-    STGInput_MouseState_Poll(&input->mouse);
+    STGInput_MouseState_Poll(input->mouse);
 }
 
 void STGInput_PostFrame(STGInput* input)
@@ -54,7 +56,7 @@ void STGInput_PostFrame(STGInput* input)
     
     STGInput_KeyboardState_Update(&input->keyboard);
     STGInput_GamepadStateList_Update(&input->gamepads);
-    STGInput_MouseState_Update(&input->mouse);
+    STGInput_MouseState_Update(input->mouse);
 }
 
 void STGInput_Destroy(STGInput* input)

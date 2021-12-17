@@ -1,6 +1,19 @@
 #include <SDL2/SDL.h>
 #include "MouseState.h"
 
+typedef struct STGInput_MouseState
+{
+    STGInput_MousePosition position;
+    STGInput_ButtonState button[STGINPUT_MOUSESTATE_BUTTONS_COUNT];
+} STGInput_MouseState;
+
+STGInput_MouseState* STGInput_MouseState_Create()
+{
+    STGInput_MouseState* mouse = calloc(1, sizeof(STGInput_MouseState));
+    
+    return mouse;
+}
+
 void STGInput_MouseState_Poll(STGInput_MouseState* mouse)
 {
     if(mouse == NULL)
@@ -8,7 +21,7 @@ void STGInput_MouseState_Poll(STGInput_MouseState* mouse)
         return;
     }
     
-    Uint32 state = SDL_GetMouseState(&mouse->X, &mouse->Y);
+    Uint32 state = SDL_GetMouseState(&mouse->position.X, &mouse->position.Y);
     
     if(!!(state & SDL_BUTTON_LMASK) != STGInput_MouseState_Button_IsDown(mouse, STGINPUT_MOUSEBUTTONS_LEFTCLICK))
     {
@@ -133,6 +146,16 @@ char STGInput_MouseState_Button_IsReleased(STGInput_MouseState* mouse, STGInput_
     }
     
     return STGInput_ButtonState_Name_IsReleased(STGInput_MouseState_Button_GetState(mouse, button));
+}
+
+STGInput_MousePosition STGInput_MouseState_Position(STGInput_MouseState* mouse)
+{
+    if(mouse == NULL)
+    {
+        return (STGInput_MousePosition){ .X = 0, .Y = 0, };
+    }
+    
+    return mouse->position;
 }
 
 STGInput_MouseButtons STGInput_MouseButtons_List[STGINPUT_MOUSESTATE_BUTTONS_COUNT] = {
