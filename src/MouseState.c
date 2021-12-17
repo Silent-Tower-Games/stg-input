@@ -125,6 +125,16 @@ char STGInput_MouseState_Button_IsPressedOrRepeated(STGInput_MouseState* mouse, 
     return STGInput_ButtonState_Name_IsPressedOrRepeated(STGInput_MouseState_Button_GetState(mouse, button));
 }
 
+char STGInput_MouseState_Button_IsReleased(STGInput_MouseState* mouse, STGInput_MouseButtons button)
+{
+    if(mouse == NULL)
+    {
+        return 0;
+    }
+    
+    return STGInput_ButtonState_Name_IsReleased(STGInput_MouseState_Button_GetState(mouse, button));
+}
+
 STGInput_MouseButtons STGInput_MouseButtons_List[STGINPUT_MOUSESTATE_BUTTONS_COUNT] = {
     STGINPUT_MOUSEBUTTONS_LEFTCLICK,
     STGINPUT_MOUSEBUTTONS_MIDDLECLICK,

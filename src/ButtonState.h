@@ -38,4 +38,6 @@ char STGInput_ButtonState_Name_IsPressed(STGInput_ButtonState_Name buttonState);
 
 char STGInput_ButtonState_Name_IsPressedOrRepeated(STGInput_ButtonState_Name buttonState);
 
+char STGInput_ButtonState_Name_IsReleased(STGInput_ButtonState_Name buttonState);
+
 char* STGInput_ButtonState_Name_ToString(STGInput_ButtonState_Name buttonState);

@@ -149,6 +149,11 @@ char STGInput_ButtonState_Name_IsPressedOrRepeated(STGInput_ButtonState_Name but
     return 0;
 }
 
+char STGInput_ButtonState_Name_IsReleased(STGInput_ButtonState_Name buttonState)
+{
+    return buttonState == STGINPUT_BUTTONSTATE_NAME_RELEASED;
+}
+
 char* STGInput_ButtonState_Name_ToString(STGInput_ButtonState_Name buttonState)
 {
     switch(buttonState)

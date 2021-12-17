@@ -18,7 +18,10 @@ static int STGInput_KeyboardState_KeyCode_Index(SDL_KeyCode code)
 
 void STGInput_KeyboardState_Event(STGInput_KeyboardState* keyboard, SDL_Event event)
 {
-    // FIXME: NULL check
+    if(keyboard == NULL)
+    {
+        return;
+    }
     
     int index = STGInput_KeyboardState_KeyCode_Index(event.key.keysym.sym);
     
@@ -51,7 +54,10 @@ void STGInput_KeyboardState_Event(STGInput_KeyboardState* keyboard, SDL_Event ev
 
 void STGInput_KeyboardState_Update(STGInput_KeyboardState* keyboard)
 {
-    // FIXME: NULL check
+    if(keyboard == NULL)
+    {
+        return;
+    }
     
     for(int i = 0; i < STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH; i++)
     {
@@ -61,7 +67,10 @@ void STGInput_KeyboardState_Update(STGInput_KeyboardState* keyboard)
 
 STGInput_ButtonState_Name STGInput_KeyboardState_Button_GetState(STGInput_KeyboardState* keyboard, SDL_KeyCode key)
 {
-    // FIXME: NULL check
+    if(keyboard == NULL)
+    {
+        return 0;
+    }
     
     int index = STGInput_KeyboardState_KeyCode_Index(key);
     
@@ -75,23 +84,42 @@ STGInput_ButtonState_Name STGInput_KeyboardState_Button_GetState(STGInput_Keyboa
 
 char STGInput_KeyboardState_Button_IsDown(STGInput_KeyboardState* keyboard, SDL_KeyCode key)
 {
-    // FIXME: NULL check
+    if(keyboard == NULL)
+    {
+        return 0;
+    }
     
     return STGInput_ButtonState_Name_IsDown(STGInput_KeyboardState_Button_GetState(keyboard, key));
 }
 
 char STGInput_KeyboardState_Button_IsPressed(STGInput_KeyboardState* keyboard, SDL_KeyCode key)
 {
-    // FIXME: NULL check
+    if(keyboard == NULL)
+    {
+        return 0;
+    }
     
     return STGInput_ButtonState_Name_IsPressed(STGInput_KeyboardState_Button_GetState(keyboard, key));
 }
 
 char STGInput_KeyboardState_Button_IsPressedOrRepeated(STGInput_KeyboardState* keyboard, SDL_KeyCode key)
 {
-    // FIXME: NULL check
+    if(keyboard == NULL)
+    {
+        return 0;
+    }
     
     return STGInput_ButtonState_Name_IsPressedOrRepeated(STGInput_KeyboardState_Button_GetState(keyboard, key));
+}
+
+char STGInput_KeyboardState_Button_IsReleased(STGInput_KeyboardState* keyboard, SDL_KeyCode key)
+{
+    if(keyboard == NULL)
+    {
+        return 0;
+    }
+    
+    return STGInput_ButtonState_Name_IsReleased(STGInput_KeyboardState_Button_GetState(keyboard, key));
 }
 
 const SDL_KeyCode STGInput_KeyboardState_Keycodes[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH] = {

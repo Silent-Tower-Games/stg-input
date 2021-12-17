@@ -82,19 +82,19 @@ int main()
             }
         }
         
-        if(STGInput_MouseState_Button_IsPressed(&input->mouse, STGINPUT_MOUSEBUTTONS_LEFTCLICK))
+        if(STGInput_GamepadState_Button_IsReleased(gamepadPlayerOne, STGINPUT_GAMEPADBUTTONS_FACE_DOWN))
         {
-            printf("Left click!\n");
+            printf("A released!\n");
         }
         
-        if(STGInput_MouseState_Button_IsPressed(&input->mouse, STGINPUT_MOUSEBUTTONS_MIDDLECLICK))
+        if(STGInput_MouseState_Button_IsReleased(&input->mouse, STGINPUT_MOUSEBUTTONS_LEFTCLICK))
         {
-            printf("Middle click!\n");
+            printf("Left click released!\n");
         }
         
-        if(STGInput_MouseState_Button_IsPressed(&input->mouse, STGINPUT_MOUSEBUTTONS_RIGHTCLICK))
+        if(STGInput_KeyboardState_Button_IsReleased(&input->keyboard, SDLK_RETURN))
         {
-            printf("Right click!\n");
+            printf("Enter released!\n");
         }
         
         // Approximately 60fps. Doesn't need to be perfect for this test

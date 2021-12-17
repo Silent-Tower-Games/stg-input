@@ -33,3 +33,5 @@ char STGInput_MouseState_Button_IsDown(STGInput_MouseState* mouse, STGInput_Mous
 char STGInput_MouseState_Button_IsPressed(STGInput_MouseState* mouse, STGInput_MouseButtons button);
 
 char STGInput_MouseState_Button_IsPressedOrRepeated(STGInput_MouseState* mouse, STGInput_MouseButtons button);
+
+char STGInput_MouseState_Button_IsReleased(STGInput_MouseState* mouse, STGInput_MouseButtons button);

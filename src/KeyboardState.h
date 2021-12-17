@@ -22,3 +22,5 @@ char STGInput_KeyboardState_Button_IsDown(STGInput_KeyboardState* keyboard, SDL_
 char STGInput_KeyboardState_Button_IsPressed(STGInput_KeyboardState* keyboard, SDL_KeyCode key);
 
 char STGInput_KeyboardState_Button_IsPressedOrRepeated(STGInput_KeyboardState* keyboard, SDL_KeyCode key);
+
+char STGInput_KeyboardState_Button_IsReleased(STGInput_KeyboardState* keyboard, SDL_KeyCode key);

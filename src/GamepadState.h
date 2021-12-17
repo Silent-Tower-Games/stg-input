@@ -114,6 +114,8 @@ char STGInput_GamepadState_Button_IsPressed(STGInput_GamepadState* gamepad, STGI
 
 char STGInput_GamepadState_Button_IsPressedOrRepeated(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button);
 
+char STGInput_GamepadState_Button_IsReleased(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button);
+
 STGInput_GamepadStateList STGInput_GamepadStateList_Create();
 
 int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_GamepadState gamepad);
