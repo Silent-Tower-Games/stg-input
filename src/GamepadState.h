@@ -71,15 +71,6 @@ typedef struct STGInput_GamepadAxis_Profile
     float rangeEnd;
 } STGInput_GamepadAxis_Profile;
 
-// TODO: Gamepad state mapping
-/**
- * Gamepad mappable options profile.
- */
-typedef struct STGInput_GamepadStateProfile
-{
-    STGInput_ButtonState button[STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS];
-} STGInput_GamepadStateProfile;
-
 /**
  * Gamepad state object.
  */
@@ -186,6 +177,13 @@ char STGInput_GamepadState_Button_IsReleased(STGInput_GamepadState* gamepad, STG
 STGInput_GamepadStateList* STGInput_GamepadStateList_Create();
 
 /**
+ * Destroy all gamepad state & vector container heap memory, and free the list object.
+ *
+ * \param list gamepad state vector container
+ */
+void STGInput_GamepadStateList_Destroy(STGInput_GamepadStateList* list);
+
+/**
  * Get a gamepad by its player index. E.g. Player One is 0, Player Two is 1, etc.
  *
  * \param list gamepad state vector container
@@ -216,10 +214,3 @@ void STGInput_GamepadStateList_SetAxesButtons(STGInput_GamepadStateList* list);
  * \param list gamepad state vector container
  */
 void STGInput_GamepadStateList_Update(STGInput_GamepadStateList* list);
-
-/**
- * Create a new default gamepad state profile.
- *
- * \return gamepad state profile
- */
-STGInput_GamepadStateProfile STGInput_GamepadStateProfile_Create();

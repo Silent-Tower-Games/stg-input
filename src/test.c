@@ -2,14 +2,6 @@
 #include <SDL2/SDL.h>
 #include "STGInput.h"
 
-// Doing:
-// TODO: Write comments
-
-// Later:
-// TODO: Gamepad state profile, wherein you can calibrate axes & remap buttons
-// TODO: Unit tests
-// TODO: Fix names. They've gotten out of hand
-
 int main()
 {
     printf("Hello, World!\n");
@@ -51,40 +43,34 @@ int main()
         
         if(gamepadPlayerOne == NULL)
         {
-            printf("Setting...\n");
             gamepadPlayerOne = STGInput_GamepadStateList_FindByIndex(input->gamepads, 0);
-            
-            printf("Active? %d\n", STGInput_GamepadState_IsActive(gamepadPlayerOne));
         }
         
-        STGInput_GamepadAxis_Profile axes[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES_BUTTONS] = {
-            { STGINPUT_GAMEPADAXES_TRIGGER_LEFT, STGINPUT_GAMEPADBUTTONS_TRIGGER_LEFT, 0.5f, 1.0f, },
-            { STGINPUT_GAMEPADAXES_TRIGGER_RIGHT, STGINPUT_GAMEPADBUTTONS_TRIGGER_RIGHT, 0.5f, 1.0f, },
-            { STGINPUT_GAMEPADAXES_STICK_LEFT_X, STGINPUT_GAMEPADBUTTONS_STICK_LEFT_LEFT, -1.0f, -0.5f, },
-            { STGINPUT_GAMEPADAXES_STICK_LEFT_X, STGINPUT_GAMEPADBUTTONS_STICK_LEFT_RIGHT, 0.5f, 1.0f, },
-            { STGINPUT_GAMEPADAXES_STICK_LEFT_Y, STGINPUT_GAMEPADBUTTONS_STICK_LEFT_UP, -1.0f, -0.5f, },
-            { STGINPUT_GAMEPADAXES_STICK_LEFT_Y, STGINPUT_GAMEPADBUTTONS_STICK_LEFT_DOWN, 0.5f, 1.0f, },
-            { STGINPUT_GAMEPADAXES_STICK_RIGHT_X, STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_LEFT, -1.0f, -0.5f, },
-            { STGINPUT_GAMEPADAXES_STICK_RIGHT_X, STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_RIGHT, 0.5f, 1.0f, },
-            { STGINPUT_GAMEPADAXES_STICK_RIGHT_Y, STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_UP, -1.0f, -0.5f, },
-            { STGINPUT_GAMEPADAXES_STICK_RIGHT_Y, STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_DOWN, 0.5f, 1.0f, },
-        };
-        
-        for(int i = 0; i < STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES_BUTTONS; i++)
+        // Keyboard tests
+        if(STGInput_KeyboardState_Button_IsPressedOrRepeated(input->keyboard, STGINPUT_KEYBOARDKEYS_RETURN))
         {
-            if(STGInput_GamepadState_Button_IsDown(gamepadPlayerOne, axes[i].button))
-            {
-                printf(
-                    "%d: %1.3f\n",
-                    i,
-                    STGInput_GamepadState_AxisPercentage(gamepadPlayerOne, axes[i].axis)
-                );
-            }
+            printf("Enter Pressed Or Repeated\n");
         }
         
-        if(STGInput_KeyboardState_Button_IsPressedOrRepeated(input->keyboard, SDLK_RETURN))
+        if(STGInput_KeyboardState_Button_IsPressed(input->keyboard, STGINPUT_KEYBOARDKEYS_LSHIFT))
         {
-            printf("Enter\n");
+            printf("Left Shift Pressed\n");
+        }
+        
+        if(STGInput_KeyboardState_Button_IsDown(input->keyboard, STGINPUT_KEYBOARDKEYS_a))
+        {
+            printf("A Down\n");
+        }
+        
+        if(STGInput_KeyboardState_Button_IsReleased(input->keyboard, STGINPUT_KEYBOARDKEYS_b))
+        {
+            printf("B Released\n");
+        }
+        
+        // Mouse tests
+        if(STGInput_MouseState_Button_IsPressed(input->mouse, STGINPUT_MOUSEBUTTONS_LEFTCLICK))
+        {
+            printf("Left Click Pressed\n");
         }
         
         // Approximately 60fps. Doesn't need to be perfect for this test

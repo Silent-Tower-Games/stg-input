@@ -68,7 +68,7 @@ void STGInput_Destroy(STGInput* input)
         return;
     }
     
-    // FIXME: Destroy all allocated memory inside input manager
+    STGInput_GamepadStateList_Destroy(input->gamepads);
     
     free(input);
 }
