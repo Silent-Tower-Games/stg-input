@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
-#include "STGInput.h"
+#include "STGInput/STGInput.h"
+
+// TODO: Convenience functions, optional
+// TODO: README
 
 void init();
 void events();
@@ -16,6 +19,8 @@ int main()
     init();
     
     input = STGInput_Create();
+    
+    printf("Hello, World!\n");
     
     while(!quit)
     {

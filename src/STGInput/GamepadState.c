@@ -408,8 +408,6 @@ void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event 
         {
             STGInput_GamepadState gamepad = STGInput_GamepadState_Create(event.cdevice.which);
             
-            printf("Added #%d\n", gamepad.id);
-            
             const int index = STGInput_GamepadStateList_Add(list, gamepad);
         } break;
         
