@@ -55,18 +55,18 @@ typedef enum STGInput_GamepadAxes
     STGINPUT_GAMEPADAXES_TRIGGER_RIGHT,
 } STGInput_GamepadAxes;
 
-typedef struct STGInput_GamepadAxes_Profile
+static STGInput_GamepadAxes STGInput_GamepadAxes_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
+static SDL_GameControllerButton SDL_GameControllerButtons_To_STGInput_GamepadButtons_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS];
+static SDL_GameControllerAxis STGInput_GamepadAxesSDL[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
+static STGInput_GamepadButtons STGInput_GamepadButtons_List[STGINPUT_GAMEPAD_BUTTONS_COUNT];
+
+typedef struct STGInput_GamepadAxis_Profile
 {
     STGInput_GamepadAxes axis;
     STGInput_GamepadButtons button;
     float rangeBegin;
     float rangeEnd;
-} STGInput_GamepadAxes_Profile;
-
-static STGInput_GamepadAxes STGInput_GamepadAxes_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
-static SDL_GameControllerButton SDL_GameControllerButtons_To_STGInput_GamepadButtons_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS];
-static SDL_GameControllerAxis STGInput_GamepadAxesSDL[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
-static STGInput_GamepadButtons STGInput_GamepadButtons_List[STGINPUT_GAMEPAD_BUTTONS_COUNT];
+} STGInput_GamepadAxis_Profile;
 
 typedef struct STGInput_GamepadStateProfile
 {

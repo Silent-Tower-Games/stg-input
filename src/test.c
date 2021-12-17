@@ -3,11 +3,10 @@
 #include "STGInput.h"
 
 // Doing:
-// TODO: Gamepad axes to button values
+// TODO: Mouse state
 
 // Later:
 // TODO: Gamepad state profile, wherein you can calibrate axes & remap buttons
-// TODO: Mouse state
 // TODO: Hide all struct properties & use functions directly with STGInput, or with a state returned from that
 // TODO: Write comments
 // TODO: Unit tests
@@ -58,7 +57,7 @@ int main()
             gamepadPlayerOne = STGInput_GamepadStateList_FindByIndex(&input->gamepads, 0);
         }
         
-        STGInput_GamepadAxes_Profile axes[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES_BUTTONS] = {
+        STGInput_GamepadAxis_Profile axes[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES_BUTTONS] = {
             { STGINPUT_GAMEPADAXES_TRIGGER_LEFT, STGINPUT_GAMEPADBUTTONS_TRIGGER_LEFT, 0.5f, 1.0f, },
             { STGINPUT_GAMEPADAXES_TRIGGER_RIGHT, STGINPUT_GAMEPADBUTTONS_TRIGGER_RIGHT, 0.5f, 1.0f, },
             { STGINPUT_GAMEPADAXES_STICK_LEFT_X, STGINPUT_GAMEPADBUTTONS_STICK_LEFT_LEFT, -1.0f, -0.5f, },
@@ -81,6 +80,21 @@ int main()
                     STGInput_GamepadState_AxisPercentage(gamepadPlayerOne, axes[i].axis)
                 );
             }
+        }
+        
+        if(STGInput_MouseState_Button_IsPressed(&input->mouse, STGINPUT_MOUSEBUTTONS_LEFTCLICK))
+        {
+            printf("Left click!\n");
+        }
+        
+        if(STGInput_MouseState_Button_IsPressed(&input->mouse, STGINPUT_MOUSEBUTTONS_MIDDLECLICK))
+        {
+            printf("Middle click!\n");
+        }
+        
+        if(STGInput_MouseState_Button_IsPressed(&input->mouse, STGINPUT_MOUSEBUTTONS_RIGHTCLICK))
+        {
+            printf("Right click!\n");
         }
         
         // Approximately 60fps. Doesn't need to be perfect for this test

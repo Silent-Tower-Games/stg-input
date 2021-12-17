@@ -8,7 +8,7 @@ STGInput_ButtonState STGInput_ButtonState_Event(
 {
     switch(down)
     {
-        case 1:
+        case STGINPUT_BUTTONSTATE_EVENT_DOWN:
         {
             if(repeat)
             {
@@ -26,7 +26,7 @@ STGInput_ButtonState STGInput_ButtonState_Event(
             }
         } break;
         
-        case 0:
+        case STGINPUT_BUTTONSTATE_EVENT_UP:
         {
             if(buttonState.state == STGINPUT_BUTTONSTATE_NAME_PRESSED)
             {
@@ -153,8 +153,6 @@ char* STGInput_ButtonState_Name_ToString(STGInput_ButtonState_Name buttonState)
 {
     switch(buttonState)
     {
-        case STGINPUT_BUTTONSTATE_NAME_INVALID:
-            return "Invalid";
         case STGINPUT_BUTTONSTATE_NAME_UP:
             return "Up";
         case STGINPUT_BUTTONSTATE_NAME_DOWN:

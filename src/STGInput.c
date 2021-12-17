@@ -10,7 +10,10 @@ STGInput* STGInput_Create()
 
 void STGInput_Event(STGInput* input, SDL_Event event)
 {
-    // FIXME: NULL check
+    if(input == NULL)
+    {
+        return;
+    }
     
     switch(event.type)
     {
@@ -33,20 +36,35 @@ void STGInput_Event(STGInput* input, SDL_Event event)
 
 void STGInput_PreFrame(STGInput* input)
 {
-    // FIXME: NULL check
+    if(input == NULL)
+    {
+        return;
+    }
     
     STGInput_GamepadStateList_SetAxesButtons(&input->gamepads);
+    STGInput_MouseState_Poll(&input->mouse);
 }
 
 void STGInput_PostFrame(STGInput* input)
 {
-    // FIXME: NULL check
+    if(input == NULL)
+    {
+        return;
+    }
     
     STGInput_KeyboardState_Update(&input->keyboard);
     STGInput_GamepadStateList_Update(&input->gamepads);
+    STGInput_MouseState_Update(&input->mouse);
 }
 
 void STGInput_Destroy(STGInput* input)
 {
+    if(input == NULL)
+    {
+        return;
+    }
+    
+    // FIXME: Destroy all allocated memory inside input manager
+    
     free(input);
 }
