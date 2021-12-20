@@ -33,7 +33,7 @@ int main()
         // Gamepad tests
         if(gamepadPlayerOne == NULL)
         {
-            gamepadPlayerOne = STGInput_GamepadStateList_FindByIndex(STGInput_Convenience_InputState_Getter()->gamepads, 0);
+            gamepadPlayerOne = gamepadObjGet(0);
         }
         
         if(gamepad(0, Pressed, FACE_DOWN))
@@ -45,7 +45,7 @@ int main()
         
         if(gamepadObj(gamepadPlayerOne, Pressed, START))
         {
-            printf("Start Button Pressed!!!!!!!!!!!!\n");
+            printf("Start Button Pressed!\n");
             
             SDL_HapticRumblePlay(rumbleObj(gamepadPlayerOne), 1.0f, 500);
         }

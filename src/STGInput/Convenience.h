@@ -19,8 +19,9 @@ STGInput* STGInput_Convenience_InputState_Getter();
 )
 
 #define gamepadObj(obj, state, button) STGInput_GamepadState_Button_Is ## state(obj, STGINPUT_GAMEPADBUTTONS_ ## button)
+#define gamepadObjGet(index) STGInput_GamepadStateList_FindByIndex(STGInput_Convenience_InputState_Getter()->gamepads, index)
 #define gamepad(index, state, button) gamepadObj(\
-    STGInput_GamepadStateList_FindByIndex(STGInput_Convenience_InputState_Getter()->gamepads, index),\
+    gamepadObjGet(index),\
     state,\
     button\
 )
