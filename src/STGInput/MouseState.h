@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SDL2/SDL.h>
 #include "ButtonState.h"
 
 #define STGINPUT_MOUSESTATE_BUTTONS_COUNT 3
@@ -18,8 +19,8 @@ typedef enum STGInput_MouseButtons
  * Mouse position state object.
  */
 typedef struct STGInput_MousePosition {
-    int X;
-    int Y;
+    Sint32 X;
+    Sint32 Y;
 } STGInput_MousePosition;
 
 /**
@@ -35,17 +36,18 @@ typedef struct STGInput_MouseState STGInput_MouseState;
 STGInput_MouseState* STGInput_MouseState_Create();
 
 /**
- * Update a mouse state object with the current mouse state.
+ * Act on a given SDL event.
  *
- * \param mouse state object
+ * \param list mouse state object
+ * \param event SDL event
  */
-void STGInput_MouseState_Poll(STGInput_MouseState* mouse);
+void STGInput_MouseState_Event(STGInput_MouseState* mouse, SDL_Event event);
 
 /**
  * Update a mouse state object's button states.
  * Will change PRESSED to DOWN, RELEASED to UP, etc.
  *
- * \param mouse state object
+ * \param mouse mouse state object
  */
 void STGInput_MouseState_Update(STGInput_MouseState* mouse);
 
@@ -112,3 +114,10 @@ char STGInput_MouseState_Button_IsDoubleClick(STGInput_MouseState* mouse, STGInp
  * \param mouse mouse state object
  */
 STGInput_MousePosition STGInput_MouseState_Position(STGInput_MouseState* mouse);
+
+/**
+ * Get the mouse scrollwheel's current state as an axis.
+ *
+ * \param mouse mouse state object
+ */
+STGInput_AxisState STGInput_MouseState_GetScroll(STGInput_MouseState* mouse);

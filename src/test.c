@@ -5,9 +5,7 @@
 #include "STGInput/ButtonState.h"
 #include "STGInput/Convenience.h"
 
-// TODO: Switch mouse stuff to events
 // TODO: README
-// TODO: Scroll wheel
 
 void init();
 void events();
@@ -67,6 +65,11 @@ int main()
         if(mouse(Down, MIDDLECLICK))
         {
             printf("Middle Click\n");
+        }
+        
+        if(scroll().value != 0)
+        {
+            printf("Scrolled: %d or %1.1f\n", scroll().value, scroll().percentage);
         }
         
         // Approximately 60fps. Doesn't need to be perfect for this test

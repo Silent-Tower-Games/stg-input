@@ -33,5 +33,6 @@ STGInput* STGInput_Convenience_InputState_Getter();
     STGINPUT_MOUSEBUTTONS_ ## button\
 )
 #define mousePos() STGInput_MouseState_Position(STGInput_Convenience_InputState_Getter()->mouse)
+#define scroll() STGInput_MouseState_GetScroll(STGInput_Convenience_InputState_Getter()->mouse)
 
 #endif

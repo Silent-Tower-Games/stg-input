@@ -35,6 +35,14 @@ void STGInput_Event(STGInput* input, SDL_Event event)
         {
             STGInput_GamepadStateList_Event(input->gamepads, event);
         } break;
+        
+        case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEBUTTONUP:
+        case SDL_MOUSEMOTION:
+        case SDL_MOUSEWHEEL:
+        {
+            STGInput_MouseState_Event(input->mouse, event);
+        } break;
     }
 }
 
@@ -46,7 +54,6 @@ void STGInput_PreFrame(STGInput* input)
     }
     
     STGInput_GamepadStateList_SetAxesButtons(input->gamepads);
-    STGInput_MouseState_Poll(input->mouse);
 }
 
 void STGInput_PostFrame(STGInput* input)
