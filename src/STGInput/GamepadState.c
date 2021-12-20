@@ -58,6 +58,11 @@ STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which)
         STGInput_GamepadState_Destroy(&gamepad);
     }
     
+    if(gamepad.haptic)
+    {
+        SDL_HapticRumbleInit(gamepad.haptic);
+    }
+    
     return gamepad;
 }
 
@@ -141,6 +146,16 @@ Sint16 STGInput_GamepadState_AxisValue(STGInput_GamepadState* gamepad, STGInput_
     }
     
     return gamepad->axis[index].value;
+}
+
+SDL_Haptic* STGInput_GamepadState_GetHaptic(STGInput_GamepadState* gamepad)
+{
+    if(gamepad == NULL)
+    {
+        return NULL;
+    }
+    
+    return gamepad->haptic;
 }
 
 static int STGInput_GamepadState_ButtonIndex(STGInput_GamepadButtons button)

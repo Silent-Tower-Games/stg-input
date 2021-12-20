@@ -17,11 +17,16 @@ STGInput* STGInput_Convenience_InputState_Getter();
     STGINPUT_KEYBOARDKEYS_ ## key\
 )
 
-#define gamepad(index, state, button) STGInput_GamepadState_Button_Is ## state(\
-    STGInput_GamepadStateList_FindByIndex(STGInput_Convenience_InputState_Getter()->gamepads, index),\
-    STGINPUT_GAMEPADBUTTONS_ ## button\
-)
 #define gamepadObj(obj, state, button) STGInput_GamepadState_Button_Is ## state(obj, STGINPUT_GAMEPADBUTTONS_ ## button)
+#define gamepad(index, state, button) gamepadObj(\
+    STGInput_GamepadStateList_FindByIndex(STGInput_Convenience_InputState_Getter()->gamepads, index),\
+    state,\
+    button\
+)
+#define rumbleObj(obj) STGInput_GamepadState_GetHaptic(obj)
+#define rumble(index) rumbleObj(\
+    STGInput_GamepadStateList_FindByIndex(STGInput_Convenience_InputState_Getter()->gamepads, index)\
+)
 
 #define mouse(state, button) STGInput_MouseState_Button_Is ## state(\
     STGInput_Convenience_InputState_Getter()->mouse,\

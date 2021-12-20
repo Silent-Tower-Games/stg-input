@@ -6,10 +6,8 @@
 #include "STGInput/Convenience.h"
 
 // TODO: Switch mouse stuff to events
-// TODO: Convenience functions, optional
 // TODO: README
 // TODO: Scroll wheel
-// TODO: Haptic
 
 void init();
 void events();
@@ -41,12 +39,16 @@ int main()
         
         if(gamepad(0, Pressed, FACE_DOWN))
         {
-            printf("A Button Pressed\n");
+            printf("A Button Pressed :)\n");
+            
+            SDL_HapticRumblePlay(rumble(0), 0.25f, 2000);
         }
         
         if(gamepadObj(gamepadPlayerOne, Pressed, START))
         {
-            printf("Start Button Pressed\n");
+            printf("Start Button Pressed!!!!!!!!!!!!\n");
+            
+            SDL_HapticRumblePlay(rumbleObj(gamepadPlayerOne), 1.0f, 500);
         }
         
         // Keyboard tests

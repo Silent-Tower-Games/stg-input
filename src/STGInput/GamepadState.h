@@ -123,6 +123,14 @@ float STGInput_GamepadState_AxisPercentage(STGInput_GamepadState* gamepad, STGIn
 Sint16 STGInput_GamepadState_AxisValue(STGInput_GamepadState* gamepad, STGInput_GamepadButtons axis);
 
 /**
+ * Get the SDL_Haptic pointer from a gamepad. Might be NULL.
+ *
+ * \param gamepad gamepad state object
+ * \return SDL_Haptic pointer, or NULL
+ */
+SDL_Haptic* STGInput_GamepadState_GetHaptic(STGInput_GamepadState* gamepad);
+
+/**
  * Get the state object of a given gamepad button.
  *
  * \param gamepad gamepad state object
