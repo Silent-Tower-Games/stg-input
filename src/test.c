@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include "STGInput/STGInput.h"
-#define STGINPUT_CONVENIENCE
 #include "STGInput/Convenience.h"
 
+// TODO: IsDoubleClick function
+// TODO: Switch mouse stuff to events
 // TODO: Convenience functions, optional
 // TODO: README
+// TODO: Scroll wheel
+// TODO: Haptic
 
 void init();
 void events();
@@ -28,14 +31,37 @@ int main()
         inputPreframe();
         
         // Gamepad tests
+        if(gamepadPlayerOne == NULL)
+        {
+            gamepadPlayerOne = STGInput_GamepadStateList_FindByIndex(STGInput_Convenience_InputState_Getter()->gamepads, 0);
+        }
+        
         if(gamepad(0, Pressed, FACE_DOWN))
         {
             printf("A Button Pressed\n");
         }
         
+        if(gamepadObj(gamepadPlayerOne, Pressed, START))
+        {
+            printf("Start Button Pressed\n");
+        }
+        
+        // Keyboard tests
         if(keyboard(Down, a))
         {
             printf("A Key Down\n");
+        }
+        
+        // Mouse tests
+        if(mouse(Pressed, LEFTCLICK))
+        {
+            STGInput_MousePosition pos = mousePos();
+            printf("%dx%d\n", pos.X, pos.Y);
+        }
+        
+        if(mouse(Down, MIDDLECLICK))
+        {
+            printf("Middle Click\n");
         }
         
         // Approximately 60fps. Doesn't need to be perfect for this test
