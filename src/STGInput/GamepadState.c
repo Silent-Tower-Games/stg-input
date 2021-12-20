@@ -230,6 +230,16 @@ char STGInput_GamepadState_Button_IsReleased(STGInput_GamepadState* gamepad, STG
     return STGInput_ButtonState_Name_IsReleased(STGInput_GamepadState_Button_GetState(gamepad, button));
 }
 
+char STGInput_GamepadState_Button_IsDoubleClick(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button)
+{
+    if(gamepad == NULL)
+    {
+        return 0;
+    }
+    
+    return STGInput_ButtonState_Name_IsDoubleClick(STGInput_GamepadState_Button_GetState(gamepad, button));
+}
+
 static void STGInput_GamepadStateList_Expand(STGInput_GamepadStateList* list)
 {
     if(list == NULL)
@@ -508,36 +518,6 @@ void STGInput_GamepadStateList_Update(STGInput_GamepadStateList* list)
             list->states[i].button[j] = STGInput_ButtonState_Update(list->states[i].button[j]);
         }
     }
-}
-
-char STGInput_GamepadStateList_Button_IsDown(STGInput_GamepadStateList* list, int index, STGInput_GamepadButtons button)
-{
-    if(list == NULL)
-    {
-        return 0;
-    }
-    
-    return STGInput_ButtonState_Name_IsDown(STGInput_GamepadState_Button_GetState(&list->states[index], button));
-}
-
-char STGInput_GamepadStateList_Button_IsPressed(STGInput_GamepadStateList* list, int index, STGInput_GamepadButtons button)
-{
-    if(list == NULL)
-    {
-        return 0;
-    }
-    
-    return STGInput_ButtonState_Name_IsPressed(STGInput_GamepadState_Button_GetState(&list->states[index], button));
-}
-
-char STGInput_GamepadStateList_Button_IsPressedOrRepeated(STGInput_GamepadStateList* list, int index, STGInput_GamepadButtons button)
-{
-    if(list == NULL)
-    {
-        return 0;
-    }
-    
-    return STGInput_ButtonState_Name_IsPressedOrRepeated(STGInput_GamepadState_Button_GetState(&list->states[index], button));
 }
 
 static const STGInput_GamepadButtons STGInput_GamepadButtons_List[STGINPUT_GAMEPAD_BUTTONS_COUNT] = {

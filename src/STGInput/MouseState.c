@@ -152,6 +152,16 @@ char STGInput_MouseState_Button_IsReleased(STGInput_MouseState* mouse, STGInput_
     return STGInput_ButtonState_Name_IsReleased(STGInput_MouseState_Button_GetState(mouse, button));
 }
 
+char STGInput_MouseState_Button_IsDoubleClick(STGInput_MouseState* mouse, STGInput_MouseButtons button)
+{
+    if(mouse == NULL)
+    {
+        return 0;
+    }
+    
+    return STGInput_ButtonState_Name_IsDoubleClick(STGInput_MouseState_Button_GetState(mouse, button));
+}
+
 STGInput_MousePosition STGInput_MouseState_Position(STGInput_MouseState* mouse)
 {
     if(mouse == NULL)

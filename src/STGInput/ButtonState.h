@@ -88,6 +88,14 @@ char STGInput_ButtonState_Name_IsPressedOrRepeated(STGInput_ButtonState_Name but
 char STGInput_ButtonState_Name_IsReleased(STGInput_ButtonState_Name buttonState);
 
 /**
+ * Get whether or not the button is newly double-click this frame.
+ *
+ * \param buttonState current button state
+ * \return 1 for double-click, 0 otherwise
+ */
+char STGInput_ButtonState_Name_IsDoubleClick(STGInput_ButtonState_Name buttonState);
+
+/**
  * Get the string representation of a given button state.
  *
  * \param buttonState button state name enum value

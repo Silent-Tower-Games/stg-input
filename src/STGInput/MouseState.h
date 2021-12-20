@@ -97,6 +97,16 @@ char STGInput_MouseState_Button_IsPressedOrRepeated(STGInput_MouseState* mouse, 
 char STGInput_MouseState_Button_IsReleased(STGInput_MouseState* mouse, STGInput_MouseButtons button);
 
 /**
+ * Get whether or not the button is newly double-clicked this frame.
+ *
+ * \param mouse mouse state object
+ * \param button button enum value
+ * \return 1 for double-clicked, 0 otherwise
+ */
+char STGInput_MouseState_Button_IsDoubleClick(STGInput_MouseState* mouse, STGInput_MouseButtons button);
+
+
+/**
  * Get the mouse position state object from a mouse state object.
  *
  * \param mouse mouse state object

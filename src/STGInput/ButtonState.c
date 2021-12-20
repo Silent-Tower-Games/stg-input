@@ -154,6 +154,20 @@ char STGInput_ButtonState_Name_IsReleased(STGInput_ButtonState_Name buttonState)
     return buttonState == STGINPUT_BUTTONSTATE_NAME_RELEASED;
 }
 
+char STGInput_ButtonState_Name_IsDoubleClick(STGInput_ButtonState_Name buttonState)
+{
+    switch(buttonState)
+    {
+        case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK:
+        case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK_THEN_RELEASED:
+        {
+            return 1;
+        }
+    }
+    
+    return 0;
+}
+
 char* STGInput_ButtonState_Name_ToString(STGInput_ButtonState_Name buttonState)
 {
     switch(buttonState)

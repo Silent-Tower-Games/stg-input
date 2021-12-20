@@ -325,3 +325,12 @@ char STGInput_KeyboardState_Button_IsPressedOrRepeated(STGInput_KeyboardState* k
  * \return 1 for released, 0 otherwise
  */
 char STGInput_KeyboardState_Button_IsReleased(STGInput_KeyboardState* keyboard, STGInput_KeyboardKeys key);
+
+/**
+ * Get whether or not the button is newly double-clicked this frame.
+ *
+ * \param keyboard keyboard state object
+ * \param button button enum value
+ * \return 1 for double-clicked, 0 otherwise
+ */
+char STGInput_KeyboardState_Button_IsDoubleClick(STGInput_KeyboardState* keyboard, STGInput_KeyboardKeys key);

@@ -152,6 +152,16 @@ char STGInput_KeyboardState_Button_IsReleased(STGInput_KeyboardState* keyboard, 
     return STGInput_ButtonState_Name_IsReleased(STGInput_KeyboardState_Button_GetState(keyboard, key));
 }
 
+char STGInput_KeyboardState_Button_IsDoubleClick(STGInput_KeyboardState* keyboard, STGInput_KeyboardKeys key)
+{
+    if(keyboard == NULL)
+    {
+        return 0;
+    }
+    
+    return STGInput_ButtonState_Name_IsDoubleClick(STGInput_KeyboardState_Button_GetState(keyboard, key));
+}
+
 static const SDL_KeyCode SDL_KeyCodes_To_STGInput_KeyboardKeys_List[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH] = {
     SDLK_UNKNOWN,
     SDLK_RETURN,

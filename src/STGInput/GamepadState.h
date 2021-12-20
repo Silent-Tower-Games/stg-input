@@ -170,6 +170,15 @@ char STGInput_GamepadState_Button_IsPressedOrRepeated(STGInput_GamepadState* gam
 char STGInput_GamepadState_Button_IsReleased(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button);
 
 /**
+ * Get whether or not the button is newly double-clicked this frame.
+ *
+ * \param gamepad gamepad state object
+ * \param button button enum value
+ * \return 1 for double-clicked, 0 otherwise
+ */
+char STGInput_GamepadState_Button_IsDoubleClick(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button);
+
+/**
  * Create a new gamepad state vector container. Pre-allocateds 8 slots, will allocate more if needed.
  *
  * \return new gamepad state vector container
