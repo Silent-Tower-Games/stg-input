@@ -1,11 +1,12 @@
 #pragma once
 
-#define STGINPUT_CONVENIENCE
-#ifdef STGINPUT_CONVENIENCE
-
 #include "STGInput.h"
 
+// This function will always exist
+// However, the macros only get defined if you have the STGINPUT_CONVENIENCE define
 STGInput* STGInput_Convenience_InputState_Getter();
+
+#ifdef STGINPUT_CONVENIENCE
 
 #define inputEvent(e) STGInput_Event(STGInput_Convenience_InputState_Getter(), e)
 #define inputPreframe() STGInput_PreFrame(STGInput_Convenience_InputState_Getter())

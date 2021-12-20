@@ -1,8 +1,5 @@
 #include "Convenience.h"
 
-#define STGINPUT_CONVENIENCE
-#ifdef STGINPUT_CONVENIENCE
-
 static STGInput* STGInput_Convenience_InputState = NULL;
 
 STGInput* STGInput_Convenience_InputState_Getter()
@@ -12,5 +9,3 @@ STGInput* STGInput_Convenience_InputState_Getter()
         STGInput_Convenience_InputState = STGInput_Create();
     }
 }
-
-#endif

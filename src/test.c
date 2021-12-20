@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include "STGInput/STGInput.h"
 #include "STGInput/ButtonState.h"
+#define STGINPUT_CONVENIENCE
 #include "STGInput/Convenience.h"
 
 // TODO: README
