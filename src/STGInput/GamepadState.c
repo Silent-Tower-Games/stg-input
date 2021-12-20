@@ -353,7 +353,7 @@ static void STGInput_GamepadStateList_Remove(STGInput_GamepadStateList* list, Ui
     {
         int nextHighest = -1;
         
-        // FIXME: This should start with highest-1 and count down to 0
+        // TODO: This should start with highest-1 and count down to 0; more efficient that way
         for(int i = 0; i < list->highest; i++)
         {
             if(!STGInput_GamepadState_IsActive(&list->states[i]))

@@ -88,8 +88,6 @@ void init()
 {
     SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC | SDL_INIT_GAMECONTROLLER);
     
-    STGInput* input = STGInput_Create();
-    
     window = SDL_CreateWindow(
         "STG Input",
         SDL_WINDOWPOS_UNDEFINED,
