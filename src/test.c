@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
+#define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
 #include "STGInput/STGInput.h"
 #include "STGInput/ButtonState.h"
