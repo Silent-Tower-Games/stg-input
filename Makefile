@@ -24,7 +24,7 @@ lib:
 .PHONY=lib-static
 lib-static:
 	make objs-lib
-	ar rcs libstginput.a src/STGInput/AxisState.o src/STGInput/Convenience.o src/STGInput/ButtonState.o src/STGInput/GamepadState.o src/STGInput/KeyboardState.o src/STGInput/MouseState.o src/STGInput/STGInput.o ${LIBS}
+	ar rcs libstginput.a src/STGInput/AxisState.o src/STGInput/Convenience.o src/STGInput/ButtonState.o src/STGInput/GamepadState.o src/STGInput/KeyboardState.o src/STGInput/MouseState.o src/STGInput/STGInput.o
 
 .PHONY=objs
 objs:
