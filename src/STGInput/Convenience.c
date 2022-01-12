@@ -8,4 +8,6 @@ STGInput* STGInput_Convenience_InputState_Getter()
     {
         STGInput_Convenience_InputState = STGInput_Create();
     }
+    
+    return STGInput_Convenience_InputState;
 }

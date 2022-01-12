@@ -9,7 +9,7 @@ static const STGInput_GamepadButtons STGInput_GamepadButtons_List[STGINPUT_GAMEP
 static const STGInput_GamepadAxis_Profile STGInput_GamepadAxes_Profile_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES_BUTTONS];
 
 static int STGInput_GamepadState_AxisSDLIndex(SDL_GameControllerAxis axis);
-static int STGInput_GamepadState_AxisIndex(STGInput_GamepadButtons axis);
+static int STGInput_GamepadState_AxisIndex(STGInput_GamepadAxes axis);
 static int STGInput_GamepadState_ButtonIndex(STGInput_GamepadButtons button);
 static int STGInput_GamepadState_ButtonIndexSDL(SDL_GameControllerButton button);
 static int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_GamepadState gamepad);
@@ -99,7 +99,7 @@ static int STGInput_GamepadState_AxisSDLIndex(SDL_GameControllerAxis axis)
     return -1;
 }
 
-static int STGInput_GamepadState_AxisIndex(STGInput_GamepadButtons axis)
+static int STGInput_GamepadState_AxisIndex(STGInput_GamepadAxes axis)
 {
     for(int i = 0; i < STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES; i++)
     {
@@ -114,7 +114,7 @@ static int STGInput_GamepadState_AxisIndex(STGInput_GamepadButtons axis)
     return -1;
 }
 
-float STGInput_GamepadState_AxisPercentage(STGInput_GamepadState* gamepad, STGInput_GamepadButtons axis)
+float STGInput_GamepadState_AxisPercentage(STGInput_GamepadState* gamepad, STGInput_GamepadAxes axis)
 {
     if(gamepad == NULL)
     {
@@ -131,7 +131,7 @@ float STGInput_GamepadState_AxisPercentage(STGInput_GamepadState* gamepad, STGIn
     return gamepad->axis[index].percentage;
 }
 
-Sint16 STGInput_GamepadState_AxisValue(STGInput_GamepadState* gamepad, STGInput_GamepadButtons axis)
+Sint16 STGInput_GamepadState_AxisValue(STGInput_GamepadState* gamepad, STGInput_GamepadAxes axis)
 {
     if(gamepad == NULL)
     {

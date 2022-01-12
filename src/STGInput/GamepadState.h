@@ -111,7 +111,7 @@ char STGInput_GamepadState_IsActive(STGInput_GamepadState* gamepad);
  * \param axis button enum value for axis
  * \return between -1.0f and 1.0f
  */
-float STGInput_GamepadState_AxisPercentage(STGInput_GamepadState* gamepad, STGInput_GamepadButtons axis);
+float STGInput_GamepadState_AxisPercentage(STGInput_GamepadState* gamepad, STGInput_GamepadAxes axis);
 
 /**
  * Get the signt 16-bit integer value of a given gamepad axis.
@@ -120,7 +120,7 @@ float STGInput_GamepadState_AxisPercentage(STGInput_GamepadState* gamepad, STGIn
  * \param axis button enum value for axis
  * \return between -32768 and 32767
  */
-Sint16 STGInput_GamepadState_AxisValue(STGInput_GamepadState* gamepad, STGInput_GamepadButtons axis);
+Sint16 STGInput_GamepadState_AxisValue(STGInput_GamepadState* gamepad, STGInput_GamepadAxes axis);
 
 /**
  * Get the SDL_Haptic pointer from a gamepad. Might be NULL.
