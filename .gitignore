@@ -5,6 +5,7 @@
 *.so
 *.a
 *.dll
+Makefile
 main
 main.exe
 valgrind.txt
