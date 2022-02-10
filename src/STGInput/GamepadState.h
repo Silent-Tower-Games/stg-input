@@ -131,6 +131,14 @@ Sint16 STGInput_GamepadState_AxisValue(STGInput_GamepadState* gamepad, STGInput_
 SDL_Haptic* STGInput_GamepadState_GetHaptic(STGInput_GamepadState* gamepad);
 
 /**
+ * Get the SDL_Joystick pointer from a gamepad. Might be NULL.
+ * 
+ * \param gamepad gamepad state object
+ * \return SDL_Joystick pointer, or NULL
+ */
+SDL_Joystick* STGInput_GamepadState_GetJoystick(STGInput_GamepadState* gamepad);
+
+/**
  * Get the state object of a given gamepad button.
  *
  * \param gamepad gamepad state object

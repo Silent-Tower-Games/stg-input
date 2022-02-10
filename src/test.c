@@ -35,6 +35,11 @@ int main()
         if(gamepadPlayerOne == NULL)
         {
             gamepadPlayerOne = gamepadObjGet(0);
+            
+            printf(
+                "%s\n",
+                SDL_JoystickName(STGInput_GamepadState_GetJoystick(gamepadPlayerOne))
+            );
         }
         
         if(gamepad(0, Pressed, FACE_DOWN))

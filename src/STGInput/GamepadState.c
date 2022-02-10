@@ -158,6 +158,16 @@ SDL_Haptic* STGInput_GamepadState_GetHaptic(STGInput_GamepadState* gamepad)
     return gamepad->haptic;
 }
 
+SDL_Joystick* STGInput_GamepadState_GetJoystick(STGInput_GamepadState* gamepad)
+{
+    if(gamepad == NULL)
+    {
+        return NULL;
+    }
+    
+    return gamepad->joystick;
+}
+
 static int STGInput_GamepadState_ButtonIndex(STGInput_GamepadButtons button)
 {
     for(int i = 0; i < STGINPUT_GAMEPAD_BUTTONS_COUNT; i++)
