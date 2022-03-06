@@ -38,7 +38,7 @@ int main()
             
             printf(
                 "%s\n",
-                SDL_JoystickName(STGInput_GamepadState_GetJoystick(gamepadPlayerOne))
+                gamepadPlayerOne ? "---" : SDL_JoystickName(STGInput_GamepadState_GetJoystick(gamepadPlayerOne))
             );
         }
         
