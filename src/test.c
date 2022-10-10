@@ -14,6 +14,7 @@ void events();
 void tests();
 
 STGInput_GamepadState* gamepadPlayerOne = NULL;
+SDL_Renderer* renderer;
 SDL_Window* window;
 SDL_Event event;
 int quit = 0;
@@ -83,9 +84,15 @@ int main()
         SDL_Delay(16);
         
         inputPostframe();
+        
+        SDL_RenderClear(renderer);
+        SDL_RenderPresent(renderer);
     }
     
     inputDestroy();
+    
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
     
     return 0;
 }
@@ -101,6 +108,11 @@ void init()
         640,
         360,
         0
+    );
+    renderer = SDL_CreateRenderer(
+        window,
+        -1,
+        SDL_RENDERER_ACCELERATED
     );
 }
 
