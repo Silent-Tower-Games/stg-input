@@ -279,6 +279,7 @@ static void STGInput_GamepadStateList_Expand(STGInput_GamepadStateList* list)
     
     for(int i = allocatedOriginal; i < list->allocated; i++)
     {
+        memset(&list->states[i], 0, sizeof(STGInput_GamepadState));
         list->states[i].id = STGINPUT_GAMEPADSTATE_ID_INVALID;
     }
 }

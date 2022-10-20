@@ -76,6 +76,8 @@ void STGInput_Destroy(STGInput* input)
     }
     
     STGInput_GamepadStateList_Destroy(input->gamepads);
+    free(input->keyboard);
+    free(input->mouse);
     
     free(input);
 }

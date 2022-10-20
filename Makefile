@@ -46,4 +46,4 @@ clean:
 
 .PHONY=valgrind
 valgrind:
-	valgrind ./main -v --leak-check=full 2> valgrind.txt
+	time valgrind --leak-check=full --track-origins=yes ./main 2> valgrind.txt
