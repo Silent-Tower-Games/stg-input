@@ -42,9 +42,9 @@ static int STGInput_GamepadState_AxisIndex(STGInput_GamepadAxes axis);
 static int STGInput_GamepadState_ButtonIndex(STGInput_GamepadButtons button);
 static int STGInput_GamepadState_ButtonIndexSDL(SDL_GameControllerButton button);
 static int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_GamepadState gamepad);
-static void STGInput_GamepadStateList_Remove(STGInput_GamepadStateList* list, Uint32 id);
-static STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Uint32 id);
-static int STGInput_GamepadStateList_Index_FindById(STGInput_GamepadStateList* list, Uint32 id);
+static void STGInput_GamepadStateList_Remove(STGInput_GamepadStateList* list, Sint32 id);
+static STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Sint32 id);
+static int STGInput_GamepadStateList_Index_FindById(STGInput_GamepadStateList* list, Sint32 id);
 
 STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which)
 {
@@ -341,7 +341,7 @@ static int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInp
     return allocatedOriginal;
 }
 
-static void STGInput_GamepadStateList_Remove(STGInput_GamepadStateList* list, Uint32 id)
+static void STGInput_GamepadStateList_Remove(STGInput_GamepadStateList* list, Sint32 id)
 {
     if(list == NULL)
     {
@@ -376,7 +376,7 @@ static void STGInput_GamepadStateList_Remove(STGInput_GamepadStateList* list, Ui
     }
 }
 
-static STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Uint32 id)
+static STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Sint32 id)
 {
     if(list == NULL)
     {
@@ -393,7 +393,7 @@ static STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_Gamepa
     return &list->states[gamepadIndex];
 }
 
-static int STGInput_GamepadStateList_Index_FindById(STGInput_GamepadStateList* list, Uint32 id)
+static int STGInput_GamepadStateList_Index_FindById(STGInput_GamepadStateList* list, Sint32 id)
 {
     if(list == NULL)
     {
