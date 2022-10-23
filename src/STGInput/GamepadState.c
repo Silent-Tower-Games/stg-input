@@ -1,21 +1,17 @@
 #include <stdlib.h>
 #include <math.h>
-#include "GamepadState.h"
+#include <SDL2/SDL.h>
+#include "AxisState.h"
+#include "ButtonState.h"
 
-static const STGInput_GamepadAxes STGInput_GamepadAxes_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
-static const SDL_GameControllerButton SDL_GameControllerButtons_To_STGInput_GamepadButtons_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS];
-static const SDL_GameControllerAxis STGInput_GamepadAxesSDL[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
-static const STGInput_GamepadButtons STGInput_GamepadButtons_List[STGINPUT_GAMEPAD_BUTTONS_COUNT];
-static const STGInput_GamepadAxis_Profile STGInput_GamepadAxes_Profile_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES_BUTTONS];
+#define STGINPUT_GAMEPAD_BUTTONS_COUNT 25
+#define STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS 15
+#define STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES 6
+#define STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES_BUTTONS 10
 
-static int STGInput_GamepadState_AxisSDLIndex(SDL_GameControllerAxis axis);
-static int STGInput_GamepadState_AxisIndex(STGInput_GamepadAxes axis);
-static int STGInput_GamepadState_ButtonIndex(STGInput_GamepadButtons button);
-static int STGInput_GamepadState_ButtonIndexSDL(SDL_GameControllerButton button);
-static int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_GamepadState gamepad);
-static void STGInput_GamepadStateList_Remove(STGInput_GamepadStateList* list, Uint32 id);
-static STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Uint32 id);
-static int STGInput_GamepadStateList_Index_FindById(STGInput_GamepadStateList* list, Uint32 id);
+#define STGINPUT_GAMEPADSTATELIST_DEFAULT_COUNT 8
+#define STGINPUT_GAMEPADSTATE_ID_INVALID -1
+#define STGINPUT_GAMEPADSTATE_INDEX_INVALID -1
 
 typedef struct STGInput_GamepadState
 {
@@ -33,6 +29,24 @@ typedef struct STGInput_GamepadStateList
     int highest;
     STGInput_GamepadState* states;
 } STGInput_GamepadStateList;
+
+#define STGINPUT_GAMEPADSTATE_IMPLEMENTATION
+#include "GamepadState.h"
+
+static const STGInput_GamepadAxes STGInput_GamepadAxes_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
+static const SDL_GameControllerButton SDL_GameControllerButtons_To_STGInput_GamepadButtons_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS];
+static const SDL_GameControllerAxis STGInput_GamepadAxesSDL[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
+static const STGInput_GamepadButtons STGInput_GamepadButtons_List[STGINPUT_GAMEPAD_BUTTONS_COUNT];
+static const STGInput_GamepadAxis_Profile STGInput_GamepadAxes_Profile_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES_BUTTONS];
+
+static int STGInput_GamepadState_AxisSDLIndex(SDL_GameControllerAxis axis);
+static int STGInput_GamepadState_AxisIndex(STGInput_GamepadAxes axis);
+static int STGInput_GamepadState_ButtonIndex(STGInput_GamepadButtons button);
+static int STGInput_GamepadState_ButtonIndexSDL(SDL_GameControllerButton button);
+static int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_GamepadState gamepad);
+static void STGInput_GamepadStateList_Remove(STGInput_GamepadStateList* list, Uint32 id);
+static STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Uint32 id);
+static int STGInput_GamepadStateList_Index_FindById(STGInput_GamepadStateList* list, Uint32 id);
 
 STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which)
 {

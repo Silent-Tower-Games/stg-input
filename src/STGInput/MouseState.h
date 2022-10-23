@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 #include "ButtonState.h"
 
-#define STGINPUT_MOUSESTATE_BUTTONS_COUNT 3
+#ifndef STGINPUT_MOUSESTATE_IMPLEMENTATION
 
 /**
  * List of supported mouse buttons.
@@ -27,6 +27,8 @@ typedef struct STGInput_MousePosition {
  * Mouse state object.
  */
 typedef struct STGInput_MouseState STGInput_MouseState;
+
+#endif
 
 /**
  * Create a new mouse state object.

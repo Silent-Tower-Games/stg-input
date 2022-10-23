@@ -1,7 +1,20 @@
 #include <SDL2/SDL.h>
 #include "AxisState.h"
 #include "ButtonState.h"
-#include "MouseState.h"
+
+#define STGINPUT_MOUSESTATE_BUTTONS_COUNT 3
+
+typedef enum STGInput_MouseButtons
+{
+    STGINPUT_MOUSEBUTTONS_LEFTCLICK,
+    STGINPUT_MOUSEBUTTONS_MIDDLECLICK,
+    STGINPUT_MOUSEBUTTONS_RIGHTCLICK,
+} STGInput_MouseButtons;
+
+typedef struct STGInput_MousePosition {
+    Sint32 X;
+    Sint32 Y;
+} STGInput_MousePosition;
 
 typedef struct STGInput_MouseState
 {
@@ -9,6 +22,9 @@ typedef struct STGInput_MouseState
     STGInput_ButtonState button[STGINPUT_MOUSESTATE_BUTTONS_COUNT];
     STGInput_AxisState wheel;
 } STGInput_MouseState;
+
+#define STGINPUT_MOUSESTATE_IMPLEMENTATION
+#include "MouseState.h"
 
 static const STGInput_MouseButtons STGInput_MouseButtons_List[STGINPUT_MOUSESTATE_BUTTONS_COUNT];
 

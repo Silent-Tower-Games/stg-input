@@ -1,10 +1,15 @@
 #include <SDL2/SDL.h>
-#include "KeyboardState.h"
+#include "ButtonState.h"
+
+#define STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH 240
 
 typedef struct STGInput_KeyboardState
 {
     STGInput_ButtonState button[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH];
 } STGInput_KeyboardState;
+
+#define STGINPUT_KEYABOARDSTATE_IMPLEMENTATION
+#include "KeyboardState.h"
 
 static const SDL_KeyCode SDL_KeyCodes_To_STGInput_KeyboardKeys_List[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH];
 static const STGInput_KeyboardKeys STGInput_KeyboardKeys_To_SDL_KeyCodes_List[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH];

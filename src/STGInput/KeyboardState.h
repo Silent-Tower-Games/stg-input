@@ -2,8 +2,6 @@
 
 #include "ButtonState.h"
 
-#define STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH 240
-
 /**
  * List of keyboard keys.
  */
@@ -251,10 +249,14 @@ typedef enum STGInput_KeyboardKeys
     STGINPUT_KEYBOARDKEYS_AUDIOFASTFORWARD,
 } STGInput_KeyboardKeys;
 
+#ifndef STGINPUT_KEYABOARDSTATE_IMPLEMENTATION
+
 /**
  * Keyboard state object.
  */
 typedef struct STGInput_KeyboardState STGInput_KeyboardState;
+
+#endif
 
 /**
  * Create a new keyboard state object.

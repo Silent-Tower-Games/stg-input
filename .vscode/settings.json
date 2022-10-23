@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "gamepadstate.h": "c",
+        "keyboardstate.h": "c",
+        "mousestate.h": "c"
+    }
+}

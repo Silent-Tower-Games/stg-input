@@ -4,15 +4,6 @@
 #include "AxisState.h"
 #include "ButtonState.h"
 
-#define STGINPUT_GAMEPAD_BUTTONS_COUNT 25
-#define STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS 15
-#define STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES 6
-#define STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES_BUTTONS 10
-
-#define STGINPUT_GAMEPADSTATELIST_DEFAULT_COUNT 8
-#define STGINPUT_GAMEPADSTATE_ID_INVALID -1
-#define STGINPUT_GAMEPADSTATE_INDEX_INVALID -1
-
 /**
  * List of gamepad buttons.
  */
@@ -71,6 +62,8 @@ typedef struct STGInput_GamepadAxis_Profile
     float rangeEnd;
 } STGInput_GamepadAxis_Profile;
 
+#ifndef STGINPUT_GAMEPADSTATE_IMPLEMENTATION
+
 /**
  * Gamepad state object.
  */
@@ -80,6 +73,8 @@ typedef struct STGInput_GamepadState STGInput_GamepadState;
  * Gamepad state vector container.
  */
 typedef struct STGInput_GamepadStateList STGInput_GamepadStateList;
+
+#endif
 
 /**
  * Create a new gamepad state object.
