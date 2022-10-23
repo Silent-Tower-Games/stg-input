@@ -35,11 +35,9 @@ typedef struct STGInput_GamepadStateList
 
 static const STGInput_GamepadAxes STGInput_GamepadAxes_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
 static const SDL_GameControllerButton SDL_GameControllerButtons_To_STGInput_GamepadButtons_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_BUTTONS];
-static const SDL_GameControllerAxis STGInput_GamepadAxesSDL[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES];
 static const STGInput_GamepadButtons STGInput_GamepadButtons_List[STGINPUT_GAMEPAD_BUTTONS_COUNT];
 static const STGInput_GamepadAxis_Profile STGInput_GamepadAxes_Profile_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES_BUTTONS];
 
-static int STGInput_GamepadState_AxisSDLIndex(SDL_GameControllerAxis axis);
 static int STGInput_GamepadState_AxisIndex(STGInput_GamepadAxes axis);
 static int STGInput_GamepadState_ButtonIndex(STGInput_GamepadButtons button);
 static int STGInput_GamepadState_ButtonIndexSDL(SDL_GameControllerButton button);
@@ -96,21 +94,6 @@ void STGInput_GamepadState_Destroy(STGInput_GamepadState* gamepad)
 char STGInput_GamepadState_IsActive(STGInput_GamepadState* gamepad)
 {
     return gamepad->id > STGINPUT_GAMEPADSTATE_ID_INVALID;
-}
-
-static int STGInput_GamepadState_AxisSDLIndex(SDL_GameControllerAxis axis)
-{
-    for(int i = 0; i < STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES; i++)
-    {
-        if(STGInput_GamepadAxesSDL[i] != axis)
-        {
-            continue;
-        }
-        
-        return i;
-    }
-    
-    return -1;
 }
 
 static int STGInput_GamepadState_AxisIndex(STGInput_GamepadAxes axis)
@@ -458,7 +441,7 @@ void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event 
         {
             STGInput_GamepadState gamepad = STGInput_GamepadState_Create(event.cdevice.which);
             
-            const int index = STGInput_GamepadStateList_Add(list, gamepad);
+            STGInput_GamepadStateList_Add(list, gamepad);
         } break;
         
         case SDL_CONTROLLERDEVICEREMOVED:
@@ -605,15 +588,6 @@ static const SDL_GameControllerButton SDL_GameControllerButtons_To_STGInput_Game
     SDL_CONTROLLER_BUTTON_DPAD_DOWN,
     SDL_CONTROLLER_BUTTON_DPAD_LEFT,
     SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
-};
-
-static const SDL_GameControllerAxis STGInput_GamepadAxesSDL[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES] = {
-    SDL_CONTROLLER_AXIS_LEFTX,
-    SDL_CONTROLLER_AXIS_LEFTY,
-    SDL_CONTROLLER_AXIS_RIGHTX,
-    SDL_CONTROLLER_AXIS_RIGHTY,
-    SDL_CONTROLLER_AXIS_TRIGGERLEFT,
-    SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
 };
 
 static const STGInput_GamepadAxes STGInput_GamepadAxes_List[STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES] = {

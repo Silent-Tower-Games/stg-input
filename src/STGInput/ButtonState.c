@@ -93,6 +93,8 @@ STGInput_ButtonState STGInput_ButtonState_Update(STGInput_ButtonState buttonStat
         {
             buttonState.state = STGINPUT_BUTTONSTATE_NAME_RELEASED;
         } break;
+        
+        default: break;
     }
     
     return buttonState;
@@ -111,6 +113,8 @@ char STGInput_ButtonState_Name_IsDown(STGInput_ButtonState_Name buttonState)
         {
             return 1;
         }
+        
+        default: break;
     }
     
     return 0;
@@ -127,6 +131,8 @@ char STGInput_ButtonState_Name_IsPressed(STGInput_ButtonState_Name buttonState)
         {
             return 1;
         }
+        
+        default: break;
     }
     
     return 0;
@@ -144,6 +150,8 @@ char STGInput_ButtonState_Name_IsPressedOrRepeated(STGInput_ButtonState_Name but
         {
             return 1;
         }
+        
+        default: break;
     }
     
     return 0;
@@ -163,6 +171,8 @@ char STGInput_ButtonState_Name_IsDoubleClick(STGInput_ButtonState_Name buttonSta
         {
             return 1;
         }
+        
+        default: break;
     }
     
     return 0;
@@ -188,6 +198,8 @@ char* STGInput_ButtonState_Name_ToString(STGInput_ButtonState_Name buttonState)
             return "Double Clicked";
         case STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK_THEN_RELEASED:
             return "Double Clicked Then Released";
+        
+        default: break;
    }
    
    return "---";
