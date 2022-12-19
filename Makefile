@@ -1,8 +1,10 @@
-RPATH=-Wl,-rpath=./
+include .env
 
-ifeq (${CC}, clang)
-RPATH=-Wl,-rpath ./
-endif
+CFLAGS?=-O2
+RPATH?=-Wl,-rpath=./
+
+INCS=${INC_SDL2}
+LIBS=${LIB_SDL2}
 
 .PHONY=application
 application:
