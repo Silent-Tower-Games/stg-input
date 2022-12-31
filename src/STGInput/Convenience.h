@@ -6,8 +6,6 @@
 // However, the macros only get defined if you have the STGINPUT_CONVENIENCE define
 STGInput* STGInput_Convenience_InputState_Getter();
 
-#ifdef STGINPUT_CONVENIENCE
-
 #define inputEvent(e) STGInput_Event(STGInput_Convenience_InputState_Getter(), e)
 #define inputPreframe() STGInput_PreFrame(STGInput_Convenience_InputState_Getter())
 #define inputPostframe() STGInput_PostFrame(STGInput_Convenience_InputState_Getter())
@@ -36,5 +34,3 @@ STGInput* STGInput_Convenience_InputState_Getter();
 )
 #define mousePos() STGInput_MouseState_Position(STGInput_Convenience_InputState_Getter()->mouse)
 #define scroll() STGInput_MouseState_GetScroll(STGInput_Convenience_InputState_Getter()->mouse)
-
-#endif
