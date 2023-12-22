@@ -44,6 +44,19 @@ STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which)
     gamepad.controller = SDL_GameControllerOpen(which);
     gamepad.haptic = SDL_HapticOpen(which);
     
+    gamepad.button[STGINPUT_GAMEPADBUTTONS_STICK_LEFT_RIGHT].isAxis = 1;
+    gamepad.button[STGINPUT_GAMEPADBUTTONS_STICK_LEFT_LEFT].isAxis = 1;
+    gamepad.button[STGINPUT_GAMEPADBUTTONS_STICK_LEFT_DOWN].isAxis = 1;
+    gamepad.button[STGINPUT_GAMEPADBUTTONS_STICK_LEFT_UP].isAxis = 1;
+    
+    gamepad.button[STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_RIGHT].isAxis = 1;
+    gamepad.button[STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_LEFT].isAxis = 1;
+    gamepad.button[STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_DOWN].isAxis = 1;
+    gamepad.button[STGINPUT_GAMEPADBUTTONS_STICK_RIGHT_UP].isAxis = 1;
+    
+    gamepad.button[STGINPUT_GAMEPADBUTTONS_TRIGGER_RIGHT].isAxis = 1;
+    gamepad.button[STGINPUT_GAMEPADBUTTONS_TRIGGER_LEFT].isAxis = 1;
+    
     // Require everything to be valid except haptic
     // Some controllers don't need haptic
     // TODO: Can we get away with just a Joystick? Idk if GameController is necessary
@@ -488,7 +501,9 @@ void STGInput_GamepadStateList_Event(STGInput_GamepadStateList* list, SDL_Event 
             
             int axisIndex = STGInput_GamepadState_AxisIndex(event.caxis.axis);
             
-            gamepad->axis[axisIndex] = STGInput_AxisState_Update(gamepad->axis[axisIndex], event.caxis.value);
+            if (axisIndex >= 0 && axisIndex < STGINPUT_GAMEPAD_BUTTONS_COUNT_AXES) {
+                gamepad->axis[axisIndex] = STGInput_AxisState_Update(gamepad->axis[axisIndex], event.caxis.value);
+            }
         } break;
     }
 }

@@ -25,6 +25,7 @@ typedef enum STGInput_ButtonState_Name
  */
 typedef struct STGInput_ButtonState
 {
+    char isAxis;
     float value;
     STGInput_ButtonState_Name state;
     int lastPressed;
