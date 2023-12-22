@@ -20,7 +20,11 @@ STGInput_ButtonState STGInput_ButtonState_Event(
                 
                 buttonState.lastPressed = 0;
             }
-            else
+            else if (
+                buttonState.state != STGINPUT_BUTTONSTATE_NAME_DOWN
+                && buttonState.state != STGINPUT_BUTTONSTATE_NAME_PRESSED
+                && buttonState.state != STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK
+            )
             {
                 buttonState.state = STGINPUT_BUTTONSTATE_NAME_PRESSED;
             }
@@ -36,7 +40,12 @@ STGInput_ButtonState STGInput_ButtonState_Event(
             {
                 buttonState.state = STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK_THEN_RELEASED;
             }
-            else
+            else if(
+                buttonState.state != STGINPUT_BUTTONSTATE_NAME_UP
+                && buttonState.state != STGINPUT_BUTTONSTATE_NAME_RELEASED
+                && buttonState.state != STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED
+                && buttonState.state != STGINPUT_BUTTONSTATE_NAME_DOWN_DOUBLECLICK_THEN_RELEASED
+            )
             {
                 buttonState.state = STGINPUT_BUTTONSTATE_NAME_RELEASED;
             }
@@ -49,9 +58,11 @@ STGInput_ButtonState STGInput_ButtonState_Event(
 STGInput_ButtonState STGInput_ButtonState_Update(STGInput_ButtonState buttonState)
 {
     if(
-        buttonState.state == STGINPUT_BUTTONSTATE_NAME_PRESSED
-        ||
-        buttonState.state == STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED
+        (
+            buttonState.state == STGINPUT_BUTTONSTATE_NAME_PRESSED
+            ||
+            buttonState.state == STGINPUT_BUTTONSTATE_NAME_PRESSED_THEN_RELEASED
+        ) && !buttonState.isAxis
     )
     {
         // TODO: This number is magical :) should probably be swapped out for a compiler flag or something

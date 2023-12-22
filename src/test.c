@@ -39,7 +39,7 @@ int main()
             
             printf(
                 "%s\n",
-                gamepadPlayerOne ? "---" : SDL_JoystickName(STGInput_GamepadState_GetJoystick(gamepadPlayerOne))
+                !gamepadPlayerOne ? "---" : SDL_JoystickName(STGInput_GamepadState_GetJoystick(gamepadPlayerOne))
             );
         }
         
@@ -55,6 +55,21 @@ int main()
             printf("Start Button Pressed!\n");
             
             SDL_HapticRumblePlay(rumbleObj(gamepadPlayerOne), 1.0f, 500);
+        }
+        
+        if(gamepadObj(gamepadPlayerOne, Pressed, STICK_LEFT_LEFT))
+        {
+            printf("Left Pressed!\n");
+        }
+        
+        if(gamepadObj(gamepadPlayerOne, Released, STICK_LEFT_LEFT))
+        {
+            printf("Left Released!\n");
+        }
+        
+        if(gamepadObj(gamepadPlayerOne, Pressed, TRIGGER_RIGHT))
+        {
+            printf("Right Trigger Pressed!\n");
         }
         
         // Keyboard tests
