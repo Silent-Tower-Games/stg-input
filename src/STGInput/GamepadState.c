@@ -94,6 +94,10 @@ void STGInput_GamepadState_Destroy(STGInput_GamepadState* gamepad)
 
 char STGInput_GamepadState_IsActive(STGInput_GamepadState* gamepad)
 {
+    if (gamepad == NULL) {
+        return 0;
+    }
+    
     return gamepad->id > STGINPUT_GAMEPADSTATE_ID_INVALID;
 }
 

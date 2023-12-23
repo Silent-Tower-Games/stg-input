@@ -3,11 +3,11 @@
 
 typedef struct STGInput_KeyboardState
 {
-    STGInput_ButtonState button[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH];
+    STGInput_ButtonState button[STGINPUT_KEYBOARDSTATE_KEYCODES_COUNT];
 } STGInput_KeyboardState;
 
-static const SDL_KeyCode SDL_KeyCodes_To_STGInput_KeyboardKeys_List[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH];
-static const STGInput_KeyboardKeys STGInput_KeyboardKeys_To_SDL_KeyCodes_List[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH];
+static const SDL_KeyCode SDL_KeyCodes_To_STGInput_KeyboardKeys_List[STGINPUT_KEYBOARDSTATE_KEYCODES_COUNT];
+static const STGInput_KeyboardKeys STGInput_KeyboardKeys_To_SDL_KeyCodes_List[STGINPUT_KEYBOARDSTATE_KEYCODES_COUNT];
 
 STGInput_KeyboardState* STGInput_KeyboardState_Create()
 {
@@ -20,7 +20,7 @@ static int STGInput_KeyboardState_SDL_KeyCode_Index(SDL_KeyCode code)
 {
     // TODO: Is there a faster way to do this? This is O(n)
     
-    for(int i = 0; i < STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH; i++)
+    for(int i = 0; i < STGINPUT_KEYBOARDSTATE_KEYCODES_COUNT; i++)
     {
         if(code == SDL_KeyCodes_To_STGInput_KeyboardKeys_List[i])
         {
@@ -35,7 +35,7 @@ static int STGInput_KeyboardState_KeyboardKeys_Index(STGInput_KeyboardKeys key)
 {
     // TODO: Is there a faster way to do this? This is O(n)
     
-    for(int i = 0; i < STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH; i++)
+    for(int i = 0; i < STGINPUT_KEYBOARDSTATE_KEYCODES_COUNT; i++)
     {
         if(key == STGInput_KeyboardKeys_To_SDL_KeyCodes_List[i])
         {
@@ -55,7 +55,7 @@ void STGInput_KeyboardState_Event(STGInput_KeyboardState* keyboard, SDL_Event ev
     
     int index = STGInput_KeyboardState_SDL_KeyCode_Index(event.key.keysym.sym);
     
-    if(index < 0 || index >= STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH)
+    if(index < 0 || index >= STGINPUT_KEYBOARDSTATE_KEYCODES_COUNT)
     {
         return;
     }
@@ -89,7 +89,7 @@ void STGInput_KeyboardState_Update(STGInput_KeyboardState* keyboard)
         return;
     }
     
-    for(int i = 0; i < STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH; i++)
+    for(int i = 0; i < STGINPUT_KEYBOARDSTATE_KEYCODES_COUNT; i++)
     {
         keyboard->button[i] = STGInput_ButtonState_Update(keyboard->button[i]);
     }
@@ -104,7 +104,7 @@ STGInput_ButtonState_Name STGInput_KeyboardState_Button_GetState(STGInput_Keyboa
     
     int index = STGInput_KeyboardState_KeyboardKeys_Index(key);
     
-    if(index < 0 || index >= STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH)
+    if(index < 0 || index >= STGINPUT_KEYBOARDSTATE_KEYCODES_COUNT)
     {
         return STGINPUT_BUTTONSTATE_NAME_UP;
     }
@@ -162,7 +162,7 @@ char STGInput_KeyboardState_Button_IsDoubleClick(STGInput_KeyboardState* keyboar
     return STGInput_ButtonState_Name_IsDoubleClick(STGInput_KeyboardState_Button_GetState(keyboard, key));
 }
 
-static const SDL_KeyCode SDL_KeyCodes_To_STGInput_KeyboardKeys_List[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH] = {
+static const SDL_KeyCode SDL_KeyCodes_To_STGInput_KeyboardKeys_List[STGINPUT_KEYBOARDSTATE_KEYCODES_COUNT] = {
     SDLK_UNKNOWN,
     SDLK_RETURN,
     SDLK_ESCAPE,
@@ -405,7 +405,7 @@ static const SDL_KeyCode SDL_KeyCodes_To_STGInput_KeyboardKeys_List[STGINPUT_KEY
     SDLK_AUDIOFASTFORWARD,
 };
 
-static const STGInput_KeyboardKeys STGInput_KeyboardKeys_To_SDL_KeyCodes_List[STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH] = {
+static const STGInput_KeyboardKeys STGInput_KeyboardKeys_To_SDL_KeyCodes_List[STGINPUT_KEYBOARDSTATE_KEYCODES_COUNT] = {
     STGINPUT_KEYBOARDKEYS_UNKNOWN,
     STGINPUT_KEYBOARDKEYS_RETURN,
     STGINPUT_KEYBOARDKEYS_ESCAPE,

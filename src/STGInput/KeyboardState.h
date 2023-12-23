@@ -2,7 +2,7 @@
 
 #include "ButtonState.h"
 
-#define STGINPUT_KEYBOARDSTATE_KEYCODES_LENGTH 240
+#define STGINPUT_KEYBOARDSTATE_KEYCODES_COUNT 240
 
 /**
  * List of keyboard keys.
