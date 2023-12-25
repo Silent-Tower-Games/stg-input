@@ -14,7 +14,6 @@ static int STGInput_GamepadState_ButtonIndex(STGInput_GamepadButtons button);
 static int STGInput_GamepadState_ButtonIndexSDL(SDL_GameControllerButton button);
 static int STGInput_GamepadStateList_Add(STGInput_GamepadStateList* list, STGInput_GamepadState gamepad);
 static void STGInput_GamepadStateList_Remove(STGInput_GamepadStateList* list, Uint32 id);
-static STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Uint32 id);
 static int STGInput_GamepadStateList_Index_FindById(STGInput_GamepadStateList* list, Uint32 id);
 
 typedef struct STGInput_GamepadState
@@ -396,7 +395,7 @@ static void STGInput_GamepadStateList_Remove(STGInput_GamepadStateList* list, Ui
     }
 }
 
-static STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Uint32 id)
+STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Uint32 id)
 {
     if(list == NULL)
     {

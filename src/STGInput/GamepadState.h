@@ -209,6 +209,15 @@ STGInput_GamepadStateList* STGInput_GamepadStateList_Create();
 void STGInput_GamepadStateList_Destroy(STGInput_GamepadStateList* list);
 
 /**
+ * Get a gamepad by its `SDL_ControllerDeviceEvent` ID.
+ * 
+ * \param list gamepad state vector container
+ * \param id ID from `SDL_ControllerDeviceEvent`
+ * \return gamepad state, if exists; NULL otherwise
+ */
+STGInput_GamepadState* STGInput_GamepadStateList_FindById(STGInput_GamepadStateList* list, Uint32 id);
+
+/**
  * Get a gamepad by its player index. E.g. Player One is 0, Player Two is 1, etc.
  *
  * \param list gamepad state vector container
