@@ -139,6 +139,14 @@ SDL_Haptic* STGInput_GamepadState_GetHaptic(STGInput_GamepadState* gamepad);
 SDL_Joystick* STGInput_GamepadState_GetJoystick(STGInput_GamepadState* gamepad);
 
 /**
+ * Get the name of a given gamepad button.
+ * 
+ * \param button button enum value
+ * \return button name
+ */
+const char* STGInput_GamepadState_Button_GetName(STGInput_GamepadButtons button);
+
+/**
  * Get the state object of a given gamepad button.
  *
  * \param gamepad gamepad state object

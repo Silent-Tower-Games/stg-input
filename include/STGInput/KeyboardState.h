@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SDL2/SDL.h>
 #include "ButtonState.h"
 
 #define STGINPUT_KEYBOARDSTATE_KEYCODES_COUNT 240
@@ -251,6 +250,14 @@ typedef enum STGInput_KeyboardKeys
     STGINPUT_KEYBOARDKEYS_AUDIOREWIND,
     STGINPUT_KEYBOARDKEYS_AUDIOFASTFORWARD,
 } STGInput_KeyboardKeys;
+
+/**
+ * Get the name of a key.
+ * 
+ * \param key button enum value
+ * \return const char* name of key
+ */
+const char* STGInput_KeyboardKeys_GetName(STGInput_KeyboardKeys key);
 
 /**
  * Keyboard state object.

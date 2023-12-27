@@ -252,6 +252,14 @@ typedef enum STGInput_KeyboardKeys
 } STGInput_KeyboardKeys;
 
 /**
+ * Get the name of a key.
+ * 
+ * \param key button enum value
+ * \return const char* name of key
+ */
+const char* STGInput_KeyboardKeys_GetName(STGInput_KeyboardKeys key);
+
+/**
  * Keyboard state object.
  */
 typedef struct STGInput_KeyboardState STGInput_KeyboardState;

@@ -33,6 +33,36 @@ typedef struct STGInput_GamepadStateList
     STGInput_GamepadState* states;
 } STGInput_GamepadStateList;
 
+#define STGINPUT_GAMEPADSTATE_BUTTON_NAMES_COUNT 25
+
+static const char* STGInput_GamepadState_Button_Names[STGINPUT_GAMEPADSTATE_BUTTON_NAMES_COUNT] = {
+    "Face Down",
+    "Face Right",
+    "Face Left",
+    "Face Top",
+    "Back",
+    "Guide",
+    "Start",
+    "Stick Left",
+    "Stick Right",
+    "Shoulder Left",
+    "Shoulder Right",
+    "D-Pad Up",
+    "D-Pad Down",
+    "D-Pad Left",
+    "D-Pad Right",
+    "Trigger Left",
+    "Trigger Right",
+    "Stick Left Left",
+    "Stick Left Right",
+    "Stick Left Down",
+    "Stick Left Up",
+    "Stick Right Left",
+    "Stick Right Right",
+    "Stick Right Down",
+    "Stick Right Up",
+};
+
 STGInput_GamepadState STGInput_GamepadState_Create(Sint32 which)
 {
     STGInput_GamepadState gamepad;
@@ -212,6 +242,15 @@ static int STGInput_GamepadState_ButtonIndexSDL(SDL_GameControllerButton button)
     }
     
     return -1;
+}
+
+const char* STGInput_GamepadState_Button_GetName(STGInput_GamepadButtons button)
+{
+    if (button < 0 || button >= STGINPUT_GAMEPADSTATE_BUTTON_NAMES_COUNT) {
+        return "---";
+    }
+    
+    return STGInput_GamepadState_Button_Names[button];
 }
 
 STGInput_ButtonState_Name STGInput_GamepadState_Button_GetState(STGInput_GamepadState* gamepad, STGInput_GamepadButtons button)
